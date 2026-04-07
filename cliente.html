@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Zona Container - Pedidos</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial;
+      background: #111;
+      color: white;
+    }
+
+    header {
+      background: black;
+      padding: 20px;
+      text-align: center;
+      border-bottom: 3px solid #ffcc00;
+    }
+
+    h1 {
+      color: #ffcc00;
+      margin: 0;
+    }
+
+    .contenedor {
+      max-width: 900px;
+      margin: auto;
+      padding: 20px;
+    }
+
+    .card {
+      background: #1b1b1b;
+      padding: 20px;
+      border-radius: 12px;
+      margin-bottom: 20px;
+    }
+
+    input, select, textarea, button {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 10px;
+      border-radius: 10px;
+      border: none;
+    }
+
+    input, select, textarea {
+      background: #2b2b2b;
+      color: white;
+    }
+
+    button {
+      background: #ffcc00;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .producto {
+      background: #222;
+      padding: 10px;
+      border-radius: 10px;
+      margin-bottom: 10px;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .carrito-item {
+      background: #222;
+      padding: 10px;
+      border-radius: 10px;
+      margin-bottom: 10px;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .oculto {
+      display: none;
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <h1>🍔 Zona Container</h1>
+  <p>Hacé tu pedido</p>
+</header>
+
+<div class="contenedor">
+
+  <div class="card">
+    <h2>Menú</h2>
+    <div id="menu"></div>
+  </div>
+
+  <div class="card">
+    <h2>Tu pedido</h2>
+    <div id="carrito"></div>
+    <h3 id="total">Total: ₡0</h3>
+  </div>
+
+  <div class="card">
+    <h2>Datos</h2>
+
+    <input id="cliente" placeholder="Nombre">
+    <input id="telefono" placeholder="Teléfono">
+
+    <select id="tipoServicio" onchange="cambiarServicio()">
+      <option value="Express">Express</option>
+      <option value="Recoger">Recoger</option>
+      <option value="Local">Comer en local</option>
+    </select>
+
+    <div id="ubicacionBox">
+      <textarea id="ubicacion" placeholder="Ubicación"></textarea>
+    </div>
+
+    <div id="horaBox" class="oculto">
+      <input type="time" id="hora">
+    </div>
+
+    <textarea id="notas" placeholder="Notas"></textarea>
+
+    <button onclick="enviarPedido()">Enviar pedido</button>
+  </div>
+
+</div>
+
+<script type="module">
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-app.js";
+import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "PEGAR_AQUI",
+  authDomain: "PEGAR_AQUI",
+  projectId: "PEGAR_AQUI",
+  storageBucket: "PEGAR_AQUI",
+  messagingSenderId: "PEGAR_AQUI",
+  appId: "PEGAR_AQUI"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+const menu = [
+  { nombre: "Hamburguesa Container", precio: 4500 },
+  { nombre: "Chicken Crispy", precio: 3500 },
+  { nombre: "8 Alitas + Papas", precio: 5800 },
+  { nombre: "10 Alitas + Papas", precio: 7000 },
+  { nombre: "Quesadilla Pizzera", precio: 4500 }
+];
+
+let carrito = [];
+
+function renderMenu() {
+  const cont = document.getElementById("menu");
+  cont.innerHTML = menu.map((p, i) => `
+    <div class="producto">
+      ${p.nombre} - ₡${p.precio}
+      <button onclick="add(${i})">+</button>
+    </div>
+  `).join("");
+}
+
+function renderCarrito() {
+  const cont = document.getElementById("carrito");
+  const total = carrito.reduce((a, b) => a + b.precio * b.cantidad, 0);
+
+  cont.innerHTML = carrito.map((p, i) => `
+    <div class="carrito-item">
+      ${p.cantidad} x ${p.nombre}
+      <button onclick="remove(${i})">x</button>
+    </div>
+  `).join("");
+
+  document.getElementById("total").innerText = "Total: ₡" + total;
+}
+
+window.add = function(i) {
+  const prod = menu[i];
+  const ex = carrito.find(p => p.nombre === prod.nombre);
+  if (ex) ex.cantidad++;
+  else carrito.push({ ...prod, cantidad: 1 });
+  renderCarrito();
+}
+
+window.remove = function(i) {
+  carrito.splice(i, 1);
+  renderCarrito();
+}
+
+window.cambiarServicio = function() {
+  const t = document.getElementById("tipoServicio").value;
+  document.getElementById("ubicacionBox").style.display = t === "Express" ? "block" : "none";
+  document.getElementById("horaBox").style.display = t === "Local" ? "block" : "none";
+}
+
+async function siguienteNumero() {
+  const ref = doc(db, "config", "numero");
+  const snap = await getDoc(ref);
+
+  let num = 0;
+  if (snap.exists()) num = snap.data().valor;
+
+  num++;
+  await setDoc(ref, { valor: num });
+
+  return num;
+}
+
+window.enviarPedido = async function() {
+
+  const cliente = document.getElementById("cliente").value;
+
+  if (!cliente) {
+    alert("Ingrese nombre");
+    return;
+  }
+
+  if (carrito.length === 0) {
+    alert("Agregue productos");
+    return;
+  }
+
+  const numero = await siguienteNumero();
+
+  const pedido = {
+    id: Date.now(),
+    numero,
+    cliente,
+    telefono: document.getElementById("telefono").value,
+    tipoServicio: document.getElementById("tipoServicio").value,
+    ubicacion: document.getElementById("ubicacion").value,
+    hora: document.getElementById("hora").value,
+    notas: document.getElementById("notas").value,
+    productos: carrito,
+    total: carrito.reduce((a,b)=>a+b.precio*b.cantidad,0),
+    estado: "Nuevo",
+    pagado: false
+  };
+
+  await setDoc(doc(db, "pedidos", String(pedido.id)), pedido);
+
+  alert("Pedido enviado #" + numero);
+
+  carrito = [];
+  renderCarrito();
+}
+
+renderMenu();
+renderCarrito();
+
+</script>
+
+</body>
+</html>
