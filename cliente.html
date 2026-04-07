@@ -1,171 +1,23 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-<link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#ffcc00">
-  <meta charset="UTF-8">
-  <title>Zona Container - Pedidos</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <style>
-    body {
-      margin: 0;
-      font-family: Arial;
-      background: #111;
-      color: white;
-    }
-
-    header {
-      background: black;
-      padding: 20px;
-      text-align: center;
-      border-bottom: 3px solid #ffcc00;
-    }
-
-    h1 {
-      color: #ffcc00;
-      margin: 0;
-    }
-
-    .contenedor {
-      max-width: 900px;
-      margin: auto;
-      padding: 20px;
-    }
-
-    .card {
-      background: #1b1b1b;
-      padding: 20px;
-      border-radius: 12px;
-      margin-bottom: 20px;
-    }
-
-    input, select, textarea, button {
-      width: 100%;
-      padding: 12px;
-      margin-bottom: 10px;
-      border-radius: 10px;
-      border: none;
-    }
-
-    input, select, textarea {
-      background: #2b2b2b;
-      color: white;
-    }
-
-    button {
-      background: #ffcc00;
-      font-weight: bold;
-      cursor: pointer;
-    }
-
-    .producto {
-      background: #222;
-      padding: 10px;
-      border-radius: 10px;
-      margin-bottom: 10px;
-      display: flex;
-      justify-content: space-between;
-    }
-
-    .carrito-item {
-      background: #222;
-      padding: 10px;
-      border-radius: 10px;
-      margin-bottom: 10px;
-      display: flex;
-      justify-content: space-between;
-    }
-
-    .oculto {
-      display: none;
-    }
-  </style>
-</head>
-
-<body>
-
-<header>
-  <h1>🍔 Zona Container</h1>
-  <p>Hacé tu pedido</p>
-</header>
-
-<div class="contenedor">
-
-  <div class="card">
-    <h2>Menú</h2>
-    <div id="menu"></div>
-  </div>
-
-  <div class="card">
-    <h2>Tu pedido</h2>
-    <div id="carrito"></div>
-    <h3 id="total">Total: ₡0</h3>
-  </div>
-
-  <div class="card">
-    <h2>Datos</h2>
-
-    <input id="cliente" placeholder="Nombre">
-    <input id="telefono" placeholder="Teléfono">
-
-    <select id="tipoServicio" onchange="cambiarServicio()">
-      <option value="Express">Express</option>
-      <option value="Recoger">Recoger</option>
-      <option value="Local">Comer en local</option>
-    </select>
-
-    <div id="ubicacionBox">
-      <textarea id="ubicacion" placeholder="Ubicación"></textarea>
-    </div>
-
-    <div id="horaBox" class="oculto">
-      <input type="time" id="hora">
-    </div>
-
-    <textarea id="notas" placeholder="Notas"></textarea>
-
-    <button onclick="enviarPedido()">Enviar pedido</button>
-  </div>
-
-</div>
-
 <script type="module">
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-app.js";
 import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-firestore.js";
 
-// Import the functions you need from the SDKs you need
-import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
-
-// Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+// 🔥 CONFIGURACIÓN REAL DE FIREBASE (la tuya ya está bien)
 const firebaseConfig = {
-  apiKey: "AIzaSyDdT8WV7MML0cMq6ODisH55xX8jdXZu98Y",
+  apiKey: "AIzaSyDdT8W7MMLOcMq6ODisH55xX8jdXZu98Y",
   authDomain: "zona-container.firebaseapp.com",
   projectId: "zona-container",
   storageBucket: "zona-container.firebasestorage.app",
   messagingSenderId: "26232579560",
-  appId: "1:26232579560:web:0f5122e0f917da2bbf705d",
-  measurementId: "G-8RN38J2CW6"
+  appId: "1:26232579560:web:0f5122e0f917da2bbf705d"
 };
 
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
-  authDomain: "PEGAR_AQUI",
-  projectId: "PEGAR_AQUI",
-  storageBucket: "PEGAR_AQUI",
-  messagingSenderId: "PEGAR_AQUI",
-  appId: "PEGAR_AQUI"
-};
-
+// 🔥 INICIALIZAR FIREBASE
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
+// 🔥 MENÚ (puede cambiar después)
 const menu = [
   { nombre: "Hamburguesa Container", precio: 4500 },
   { nombre: "Chicken Crispy", precio: 3500 },
@@ -176,6 +28,7 @@ const menu = [
 
 let carrito = [];
 
+// 🔥 MOSTRAR MENÚ
 function renderMenu() {
   const cont = document.getElementById("menu");
   cont.innerHTML = menu.map((p, i) => `
@@ -186,6 +39,7 @@ function renderMenu() {
   `).join("");
 }
 
+// 🔥 MOSTRAR CARRITO
 function renderCarrito() {
   const cont = document.getElementById("carrito");
   const total = carrito.reduce((a, b) => a + b.precio * b.cantidad, 0);
@@ -200,6 +54,7 @@ function renderCarrito() {
   document.getElementById("total").innerText = "Total: ₡" + total;
 }
 
+// 🔥 AGREGAR PRODUCTO
 window.add = function(i) {
   const prod = menu[i];
   const ex = carrito.find(p => p.nombre === prod.nombre);
@@ -208,17 +63,20 @@ window.add = function(i) {
   renderCarrito();
 }
 
+// 🔥 ELIMINAR PRODUCTO
 window.remove = function(i) {
   carrito.splice(i, 1);
   renderCarrito();
 }
 
+// 🔥 CAMBIAR SERVICIO
 window.cambiarServicio = function() {
   const t = document.getElementById("tipoServicio").value;
   document.getElementById("ubicacionBox").style.display = t === "Express" ? "block" : "none";
   document.getElementById("horaBox").style.display = t === "Local" ? "block" : "none";
 }
 
+// 🔥 GENERAR NÚMERO DE PEDIDO
 async function siguienteNumero() {
   const ref = doc(db, "config", "numero");
   const snap = await getDoc(ref);
@@ -232,6 +90,7 @@ async function siguienteNumero() {
   return num;
 }
 
+// 🔥 ENVIAR PEDIDO
 window.enviarPedido = async function() {
 
   const cliente = document.getElementById("cliente").value;
@@ -271,10 +130,8 @@ window.enviarPedido = async function() {
   renderCarrito();
 }
 
+// 🔥 INICIALIZAR
 renderMenu();
 renderCarrito();
 
 </script>
-
-</body>
-</html>
