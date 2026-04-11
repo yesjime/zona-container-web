@@ -62,7 +62,7 @@
     .card h2 {
       color: #ffcc00;
       margin-bottom: 18px;
-      font-size: 1.7rem;
+      font-size: 1.6rem;
     }
 
     label {
@@ -89,6 +89,12 @@
     textarea {
       min-height: 110px;
       resize: vertical;
+    }
+
+    input[readonly],
+    textarea[readonly] {
+      background: #181818;
+      color: #ddd;
     }
 
     .btn {
@@ -118,6 +124,7 @@
       margin-top: 12px;
       color: #bbb;
       font-size: 0.95rem;
+      line-height: 1.4;
     }
 
     .pedido-item {
@@ -139,6 +146,7 @@
       margin-bottom: 6px;
       color: #ddd;
       line-height: 1.4;
+      word-break: break-word;
     }
 
     .pedido-item small {
@@ -173,11 +181,6 @@
       color: white;
     }
 
-    .btn-limpiar {
-      background: #444;
-      color: white;
-    }
-
     #instalarBtn {
       display: none;
       margin-top: 14px;
@@ -192,6 +195,13 @@
       cursor: pointer;
     }
 
+    .nota-ubicacion {
+      font-size: 0.92rem;
+      color: #bbb;
+      margin-top: 8px;
+      line-height: 1.4;
+    }
+
     @media (max-width: 900px) {
       .container {
         grid-template-columns: 1fr;
@@ -202,7 +212,7 @@
 <body>
   <div class="header">
     <h1>🍔 Zona Container</h1>
-    <p>Sistema principal de pedidos + comandera</p>
+    <p>Haz tu pedido rápido desde la app</p>
   </div>
 
   <div class="container">
@@ -212,6 +222,7 @@
       <form id="pedidoForm">
         <label for="formaIngreso">Forma de ingreso</label>
         <select id="formaIngreso">
+          <option>App</option>
           <option>WhatsApp</option>
           <option>Llamada</option>
           <option>En local</option>
@@ -230,10 +241,16 @@
         <input type="text" id="nombreCliente" placeholder="Ej: Juan Pérez" required />
 
         <label for="telefono">Teléfono</label>
-        <input type="text" id="telefono" placeholder="Ej: 8888-8888" required />
+        <input type="tel" id="telefono" placeholder="Ej: 8888-8888" required />
 
-        <label for="direccion">Ubicación / Dirección para express</label>
-        <textarea id="direccion" placeholder="Ej: Ojo de Agua, 100 m al norte de..."></textarea>
+        <label for="direccion">Ubicación actual</label>
+        <textarea id="direccion" placeholder="Toca el botón para escoger tu ubicación actual" readonly></textarea>
+        <button type="button" class="btn btn-secundario" onclick="obtenerUbicacion()">
+          Escoger ubicación actual
+        </button>
+        <div class="nota-ubicacion">
+          La app te pedirá permiso para usar tu ubicación y enviarla con el pedido.
+        </div>
 
         <label for="pedido">Pedido</label>
         <textarea id="pedido" placeholder="Ej: 2 hamburguesas tradicionales + papas, 1 orden de alitas BBQ" required></textarea>
@@ -291,7 +308,7 @@
           <p><strong>Teléfono:</strong> ${pedido.telefono}</p>
           <p><strong>Forma de ingreso:</strong> ${pedido.formaIngreso}</p>
           <p><strong>Tipo de servicio:</strong> ${pedido.tipoServicio}</p>
-          <p><strong>Dirección:</strong> ${pedido.direccion || "No indicada"}</p>
+          <p><strong>Ubicación:</strong> <a href="${pedido.direccion}" target="_blank" style="color:#ffcc00;">Ver ubicación</a></p>
           <p><strong>Pedido:</strong> ${pedido.pedido}</p>
           <p><strong>Notas:</strong> ${pedido.notas || "Sin notas"}</p>
           <small><strong>Fecha:</strong> ${pedido.fecha}</small>
@@ -314,7 +331,35 @@
 
     function limpiarFormulario() {
       pedidoForm.reset();
+      document.getElementById("direccion").value = "";
       estadoApp.textContent = "Formulario limpio.";
+    }
+
+    function obtenerUbicacion() {
+      if (!navigator.geolocation) {
+        estadoApp.textContent = "Este dispositivo no permite obtener ubicación.";
+        return;
+      }
+
+      estadoApp.textContent = "Obteniendo ubicación actual...";
+
+      navigator.geolocation.getCurrentPosition(
+        function(position) {
+          const lat = position.coords.latitude;
+          const lng = position.coords.longitude;
+          const linkMaps = `https://www.google.com/maps?q=${lat},${lng}`;
+          document.getElementById("direccion").value = linkMaps;
+          estadoApp.textContent = "Ubicación actual agregada correctamente.";
+        },
+        function() {
+          estadoApp.textContent = "No se pudo obtener la ubicación. Revisa los permisos del navegador.";
+        },
+        {
+          enableHighAccuracy: true,
+          timeout: 10000,
+          maximumAge: 0
+        }
+      );
     }
 
     pedidoForm.addEventListener("submit", function(e) {
@@ -331,8 +376,8 @@
         fecha: new Date().toLocaleString("es-CR")
       };
 
-      if (!nuevoPedido.nombreCliente || !nuevoPedido.telefono || !nuevoPedido.pedido) {
-        estadoApp.textContent = "Completa nombre, teléfono y pedido.";
+      if (!nuevoPedido.nombreCliente || !nuevoPedido.telefono || !nuevoPedido.pedido || !nuevoPedido.direccion) {
+        estadoApp.textContent = "Completa nombre, teléfono, pedido y escoge la ubicación actual.";
         return;
       }
 
@@ -341,6 +386,7 @@
       guardarPedidos(pedidos);
 
       pedidoForm.reset();
+      document.getElementById("direccion").value = "";
       renderPedidos();
       estadoApp.textContent = "Pedido guardado correctamente.";
     });
