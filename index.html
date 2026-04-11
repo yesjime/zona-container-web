@@ -6,7 +6,7 @@
   <title>Zona Container</title>
 
   <meta name="theme-color" content="#000000" />
-  <meta name="description" content="App de pedidos de Zona Container" />
+  <meta name="description" content="App oficial de pedidos de Zona Container" />
 
   <link rel="manifest" href="./manifest.json" />
   <link rel="icon" href="./icono.png" />
@@ -24,46 +24,82 @@
       background: #000;
       color: #fff;
       min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
       padding: 20px;
     }
 
+    .header {
+      text-align: center;
+      margin-bottom: 25px;
+    }
+
+    .header h1 {
+      color: #ffcc00;
+      font-size: 2rem;
+      margin-bottom: 8px;
+    }
+
+    .header p {
+      color: #ccc;
+      font-size: 1rem;
+    }
+
+    .container {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
     .card {
-      width: 100%;
-      max-width: 500px;
       background: #111;
       border: 2px solid #ffcc00;
       border-radius: 18px;
-      padding: 28px;
-      text-align: center;
-      box-shadow: 0 0 20px rgba(255, 204, 0, 0.15);
+      padding: 22px;
+      box-shadow: 0 0 20px rgba(255, 204, 0, 0.12);
     }
 
-    h1 {
+    .card h2 {
       color: #ffcc00;
-      font-size: 2rem;
-      margin-bottom: 10px;
+      margin-bottom: 18px;
+      font-size: 1.7rem;
     }
 
-    p {
-      color: #ddd;
-      margin-bottom: 24px;
-      line-height: 1.5;
+    label {
+      display: block;
+      margin-bottom: 8px;
+      margin-top: 14px;
+      font-weight: bold;
+      color: #fff;
+    }
+
+    input,
+    select,
+    textarea {
+      width: 100%;
+      padding: 14px;
+      border-radius: 12px;
+      border: 1px solid #333;
+      background: #1d1d1d;
+      color: #fff;
+      font-size: 1rem;
+      outline: none;
+    }
+
+    textarea {
+      min-height: 110px;
+      resize: vertical;
     }
 
     .btn {
-      display: inline-block;
+      width: 100%;
+      margin-top: 18px;
+      padding: 14px;
+      border: none;
+      border-radius: 12px;
       background: #ffcc00;
       color: #000;
       font-weight: bold;
-      text-decoration: none;
-      padding: 14px 20px;
-      border-radius: 12px;
-      margin: 8px 0;
-      width: 100%;
-      border: none;
       font-size: 1rem;
       cursor: pointer;
     }
@@ -72,33 +108,245 @@
       opacity: 0.95;
     }
 
-    .instalar-info {
-      margin-top: 18px;
-      font-size: 0.95rem;
+    .btn-secundario {
+      background: #333;
+      color: #fff;
+      margin-top: 10px;
+    }
+
+    .estado {
+      margin-top: 12px;
       color: #bbb;
+      font-size: 0.95rem;
+    }
+
+    .pedido-item {
+      background: #1a1a1a;
+      border: 1px solid #333;
+      border-left: 4px solid #ffcc00;
+      border-radius: 12px;
+      padding: 14px;
+      margin-bottom: 12px;
+    }
+
+    .pedido-item h3 {
+      color: #ffcc00;
+      margin-bottom: 8px;
+      font-size: 1.1rem;
+    }
+
+    .pedido-item p {
+      margin-bottom: 6px;
+      color: #ddd;
+      line-height: 1.4;
+    }
+
+    .pedido-item small {
+      color: #999;
+      display: block;
+      margin-top: 8px;
+    }
+
+    .vacio {
+      color: #bbb;
+      font-size: 1rem;
+      margin-top: 8px;
+    }
+
+    .acciones {
+      display: flex;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .acciones button {
+      flex: 1;
+      padding: 10px;
+      border: none;
+      border-radius: 10px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .btn-eliminar {
+      background: #a32020;
+      color: white;
+    }
+
+    .btn-limpiar {
+      background: #444;
+      color: white;
+    }
+
+    #instalarBtn {
+      display: none;
+      margin-top: 14px;
+      width: 100%;
+      padding: 14px;
+      border: none;
+      border-radius: 12px;
+      background: #ffcc00;
+      color: #000;
+      font-weight: bold;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+
+    @media (max-width: 900px) {
+      .container {
+        grid-template-columns: 1fr;
+      }
     }
   </style>
 </head>
 <body>
-  <div class="card">
+  <div class="header">
     <h1>🍔 Zona Container</h1>
-    <p>App oficial de pedidos de Zona Container.</p>
+    <p>Sistema principal de pedidos + comandera</p>
+  </div>
 
-    <a class="btn" href="https://wa.me/50663281021" target="_blank">
-      Hacer pedido por WhatsApp
-    </a>
+  <div class="container">
+    <div class="card">
+      <h2>Nuevo pedido</h2>
 
-    <button class="btn" id="instalarBtn" style="display:none;">
-      Instalar aplicación
-    </button>
+      <form id="pedidoForm">
+        <label for="formaIngreso">Forma de ingreso</label>
+        <select id="formaIngreso">
+          <option>WhatsApp</option>
+          <option>Llamada</option>
+          <option>En local</option>
+          <option>Facebook</option>
+          <option>Instagram</option>
+        </select>
 
-    <div class="instalar-info">
-      Si no aparece el botón, abre el menú de Chrome y toca
-      <strong>Agregar a pantalla principal</strong>.
+        <label for="tipoServicio">Tipo de servicio</label>
+        <select id="tipoServicio">
+          <option>Express</option>
+          <option>Recoger en local</option>
+          <option>Comer en local</option>
+        </select>
+
+        <label for="nombreCliente">Nombre del cliente</label>
+        <input type="text" id="nombreCliente" placeholder="Ej: Juan Pérez" required />
+
+        <label for="telefono">Teléfono</label>
+        <input type="text" id="telefono" placeholder="Ej: 8888-8888" required />
+
+        <label for="direccion">Ubicación / Dirección para express</label>
+        <textarea id="direccion" placeholder="Ej: Ojo de Agua, 100 m al norte de..."></textarea>
+
+        <label for="pedido">Pedido</label>
+        <textarea id="pedido" placeholder="Ej: 2 hamburguesas tradicionales + papas, 1 orden de alitas BBQ" required></textarea>
+
+        <label for="notas">Notas del pedido</label>
+        <textarea id="notas" placeholder="Sin cebolla, salsa aparte, pagar con SINPE, etc."></textarea>
+
+        <button type="submit" class="btn">Guardar pedido</button>
+        <button type="button" class="btn btn-secundario" onclick="limpiarFormulario()">Limpiar formulario</button>
+        <button type="button" id="instalarBtn">Instalar aplicación</button>
+
+        <div class="estado" id="estadoApp">Listo para registrar pedidos.</div>
+      </form>
+    </div>
+
+    <div class="card">
+      <h2>Pedidos registrados</h2>
+      <div id="listaPedidos">
+        <p class="vacio">No hay pedidos registrados.</p>
+      </div>
     </div>
   </div>
 
   <script>
+    const pedidoForm = document.getElementById("pedidoForm");
+    const listaPedidos = document.getElementById("listaPedidos");
+    const estadoApp = document.getElementById("estadoApp");
+
+    function obtenerPedidos() {
+      return JSON.parse(localStorage.getItem("zonaContainerPedidos")) || [];
+    }
+
+    function guardarPedidos(pedidos) {
+      localStorage.setItem("zonaContainerPedidos", JSON.stringify(pedidos));
+    }
+
+    function renderPedidos() {
+      const pedidos = obtenerPedidos();
+
+      if (pedidos.length === 0) {
+        listaPedidos.innerHTML = '<p class="vacio">No hay pedidos registrados.</p>';
+        return;
+      }
+
+      listaPedidos.innerHTML = "";
+
+      pedidos.slice().reverse().forEach((pedido, indexReversed) => {
+        const indexReal = pedidos.length - 1 - indexReversed;
+
+        const item = document.createElement("div");
+        item.className = "pedido-item";
+
+        item.innerHTML = `
+          <h3>${pedido.nombreCliente}</h3>
+          <p><strong>Teléfono:</strong> ${pedido.telefono}</p>
+          <p><strong>Forma de ingreso:</strong> ${pedido.formaIngreso}</p>
+          <p><strong>Tipo de servicio:</strong> ${pedido.tipoServicio}</p>
+          <p><strong>Dirección:</strong> ${pedido.direccion || "No indicada"}</p>
+          <p><strong>Pedido:</strong> ${pedido.pedido}</p>
+          <p><strong>Notas:</strong> ${pedido.notas || "Sin notas"}</p>
+          <small><strong>Fecha:</strong> ${pedido.fecha}</small>
+          <div class="acciones">
+            <button class="btn-eliminar" onclick="eliminarPedido(${indexReal})">Eliminar</button>
+          </div>
+        `;
+
+        listaPedidos.appendChild(item);
+      });
+    }
+
+    function eliminarPedido(index) {
+      const pedidos = obtenerPedidos();
+      pedidos.splice(index, 1);
+      guardarPedidos(pedidos);
+      renderPedidos();
+      estadoApp.textContent = "Pedido eliminado correctamente.";
+    }
+
+    function limpiarFormulario() {
+      pedidoForm.reset();
+      estadoApp.textContent = "Formulario limpio.";
+    }
+
+    pedidoForm.addEventListener("submit", function(e) {
+      e.preventDefault();
+
+      const nuevoPedido = {
+        formaIngreso: document.getElementById("formaIngreso").value,
+        tipoServicio: document.getElementById("tipoServicio").value,
+        nombreCliente: document.getElementById("nombreCliente").value.trim(),
+        telefono: document.getElementById("telefono").value.trim(),
+        direccion: document.getElementById("direccion").value.trim(),
+        pedido: document.getElementById("pedido").value.trim(),
+        notas: document.getElementById("notas").value.trim(),
+        fecha: new Date().toLocaleString("es-CR")
+      };
+
+      if (!nuevoPedido.nombreCliente || !nuevoPedido.telefono || !nuevoPedido.pedido) {
+        estadoApp.textContent = "Completa nombre, teléfono y pedido.";
+        return;
+      }
+
+      const pedidos = obtenerPedidos();
+      pedidos.push(nuevoPedido);
+      guardarPedidos(pedidos);
+
+      pedidoForm.reset();
+      renderPedidos();
+      estadoApp.textContent = "Pedido guardado correctamente.";
+    });
+
+    renderPedidos();
+
     if ("serviceWorker" in navigator) {
       window.addEventListener("load", () => {
         navigator.serviceWorker.register("./sw.js")
@@ -113,14 +361,13 @@
     window.addEventListener("beforeinstallprompt", (e) => {
       e.preventDefault();
       deferredPrompt = e;
-      instalarBtn.style.display = "inline-block";
+      instalarBtn.style.display = "block";
     });
 
     instalarBtn.addEventListener("click", async () => {
       if (!deferredPrompt) return;
       deferredPrompt.prompt();
-      const choiceResult = await deferredPrompt.userChoice;
-      console.log("Resultado instalación:", choiceResult.outcome);
+      await deferredPrompt.userChoice;
       deferredPrompt = null;
       instalarBtn.style.display = "none";
     });
