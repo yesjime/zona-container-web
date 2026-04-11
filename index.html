@@ -44,9 +44,9 @@
 
     .container {
       display: grid;
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: 1.1fr 0.9fr;
       gap: 18px;
-      max-width: 1200px;
+      max-width: 1300px;
       margin: 0 auto;
     }
 
@@ -120,11 +120,57 @@
       font-size: 0.95rem;
     }
 
+    .nota {
+      font-size: 0.9rem;
+      color: #bcbcbc;
+      margin-top: 8px;
+      line-height: 1.4;
+    }
+
+    .totales-box {
+      margin-top: 14px;
+      background: #181818;
+      border: 1px solid #333;
+      border-radius: 14px;
+      padding: 14px;
+    }
+
+    .totales-linea {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 8px;
+      color: #ddd;
+    }
+
+    .totales-linea.total {
+      font-size: 1.1rem;
+      font-weight: bold;
+      color: #ffcc00;
+      margin-bottom: 0;
+    }
+
+    .total-nota {
+      margin-top: 8px;
+      color: #bbb;
+      font-size: 0.9rem;
+      line-height: 1.4;
+    }
+
+    .categoria {
+      margin-top: 18px;
+    }
+
+    .categoria h3 {
+      color: #ffcc00;
+      margin-bottom: 10px;
+      font-size: 1.05rem;
+    }
+
     .menu-grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
       gap: 10px;
-      margin-top: 12px;
     }
 
     .producto {
@@ -134,34 +180,45 @@
       padding: 12px;
     }
 
-    .producto h3 {
-      color: #ffcc00;
-      font-size: 1rem;
+    .producto h4 {
+      color: #fff;
+      font-size: 0.98rem;
       margin-bottom: 8px;
+      line-height: 1.35;
     }
 
-    .producto p {
-      color: #ccc;
-      font-size: 0.9rem;
+    .precio {
+      color: #ffcc00;
+      font-weight: bold;
       margin-bottom: 10px;
     }
 
-    .producto button {
-      width: 100%;
-      padding: 10px;
+    .controles {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .controles button {
+      width: 38px;
+      height: 38px;
       border: none;
       border-radius: 10px;
       background: #ffcc00;
       color: #000;
       font-weight: bold;
+      font-size: 1.2rem;
       cursor: pointer;
     }
 
-    .nota {
-      font-size: 0.9rem;
-      color: #bcbcbc;
-      margin-top: 8px;
-      line-height: 1.4;
+    .cantidad {
+      flex: 1;
+      text-align: center;
+      background: #111;
+      border: 1px solid #333;
+      border-radius: 10px;
+      padding: 10px;
+      min-width: 55px;
     }
 
     .pedido-item {
@@ -223,11 +280,13 @@
       display: none;
     }
 
-    @media (max-width: 900px) {
+    @media (max-width: 1000px) {
       .container {
         grid-template-columns: 1fr;
       }
+    }
 
+    @media (max-width: 700px) {
       .menu-grid {
         grid-template-columns: 1fr;
       }
@@ -246,10 +305,11 @@
 
       <form id="pedidoForm">
         <label for="tipoServicio">Tipo de servicio</label>
-        <select id="tipoServicio">
-          <option>Express</option>
-          <option>Recoger en local</option>
-          <option>Comer en local</option>
+        <select id="tipoServicio" required>
+          <option value="">Selecciona una opción</option>
+          <option value="Express">Express</option>
+          <option value="Recoger en local">Recoger en local</option>
+          <option value="Comer en local">Comer en local</option>
         </select>
 
         <label for="nombreCliente">Nombre del cliente</label>
@@ -269,59 +329,24 @@
           </div>
         </div>
 
-        <label>Escoge tus productos</label>
-        <div class="menu-grid">
-          <div class="producto">
-            <h3>Hamburguesa Tradicional</h3>
-            <p>Toca para agregar</p>
-            <button type="button" onclick="agregarProducto('Hamburguesa Tradicional')">Agregar</button>
-          </div>
+        <div id="menuContainer"></div>
 
-          <div class="producto">
-            <h3>Chicken Crispy</h3>
-            <p>Toca para agregar</p>
-            <button type="button" onclick="agregarProducto('Chicken Crispy')">Agregar</button>
-          </div>
+        <label for="pedido">Detalle del pedido</label>
+        <textarea id="pedido" placeholder="Aquí aparecerán los productos escogidos" readonly></textarea>
 
-          <div class="producto">
-            <h3>Container Jr</h3>
-            <p>Toca para agregar</p>
-            <button type="button" onclick="agregarProducto('Container Jr')">Agregar</button>
+        <div class="totales-box">
+          <div class="totales-linea">
+            <span>Subtotal de productos</span>
+            <strong id="subtotalTexto">₡0</strong>
           </div>
-
-          <div class="producto">
-            <h3>8 alitas + papas</h3>
-            <p>Toca para agregar</p>
-            <button type="button" onclick="agregarProducto('8 alitas + papas')">Agregar</button>
+          <div class="totales-linea total">
+            <span>Total visible al cliente</span>
+            <strong id="totalTexto">₡0</strong>
           </div>
-
-          <div class="producto">
-            <h3>10 alitas + papas</h3>
-            <p>Toca para agregar</p>
-            <button type="button" onclick="agregarProducto('10 alitas + papas')">Agregar</button>
-          </div>
-
-          <div class="producto">
-            <h3>La Brutal</h3>
-            <p>Toca para agregar</p>
-            <button type="button" onclick="agregarProducto('La Brutal')">Agregar</button>
-          </div>
-
-          <div class="producto">
-            <h3>Quesadilla Pizzera</h3>
-            <p>Toca para agregar</p>
-            <button type="button" onclick="agregarProducto('Quesadilla Pizzera')">Agregar</button>
-          </div>
-
-          <div class="producto">
-            <h3>Tacos de Birria</h3>
-            <p>Toca para agregar</p>
-            <button type="button" onclick="agregarProducto('Tacos de Birria')">Agregar</button>
+          <div class="total-nota" id="notaExpressTotal">
+            El monto de express se asigna al ingresar el pedido en Zona Container.
           </div>
         </div>
-
-        <label for="pedido">Pedido seleccionado</label>
-        <textarea id="pedido" placeholder="Aquí aparecerán los productos escogidos" readonly></textarea>
 
         <button type="button" class="btn btn-secundario" onclick="limpiarPedidoSeleccionado()">
           Limpiar productos
@@ -348,6 +373,24 @@
   </div>
 
   <script>
+    const MENU_ITEMS = [
+      { categoria: "Hamburguesas y combos", nombre: "2 Hamburguesas Tradicionales + papas", precio: 5000 },
+      { categoria: "Hamburguesas y combos", nombre: "2 Hamburguesas Chicken + papas", precio: 5000 },
+      { categoria: "Hamburguesas y combos", nombre: "2 Container Jr + papas", precio: 6500 },
+      { categoria: "Hamburguesas y combos", nombre: "4 Hamburguesas regulares + papas", precio: 7800 },
+      { categoria: "Hamburguesas y combos", nombre: "8 Mini hamburguesas + papas", precio: 7500 },
+
+      { categoria: "Alitas y promos", nombre: "8 Alitas completas + papas", precio: 5800 },
+      { categoria: "Alitas y promos", nombre: "10 Alitas completas + papas", precio: 7000 },
+      { categoria: "Alitas y promos", nombre: "La Brutal: 15 alitas + papas grandes + 2 salsas + Pepsi 2.5 L", precio: 10000 },
+
+      { categoria: "Especiales", nombre: "Quesadilla Pizzera", precio: 4500 },
+      { categoria: "Especiales", nombre: "Promo 12 tacos de birria + birria + guacamole + salsa tatemada", precio: 10000 },
+      { categoria: "Especiales", nombre: "2 Nachos pequeños", precio: 5000 },
+      { categoria: "Especiales", nombre: "Chifrijo", precio: 2800 },
+      { categoria: "Especiales", nombre: "Chifrijo + cerveza nacional", precio: 3200 }
+    ];
+
     const pedidoForm = document.getElementById("pedidoForm");
     const listaPedidos = document.getElementById("listaPedidos");
     const estadoApp = document.getElementById("estadoApp");
@@ -355,8 +398,12 @@
     const tipoServicioSelect = document.getElementById("tipoServicio");
     const bloqueUbicacion = document.getElementById("bloqueUbicacion");
     const direccionTextarea = document.getElementById("direccion");
+    const subtotalTexto = document.getElementById("subtotalTexto");
+    const totalTexto = document.getElementById("totalTexto");
+    const notaExpressTotal = document.getElementById("notaExpressTotal");
+    const menuContainer = document.getElementById("menuContainer");
 
-    let pedidoSeleccionado = [];
+    let cantidades = new Array(MENU_ITEMS.length).fill(0);
 
     function escapeHtml(texto) {
       return String(texto)
@@ -367,43 +414,97 @@
         .replace(/'/g, "&#039;");
     }
 
+    function formatearCRC(monto) {
+      return `₡${Number(monto).toLocaleString("es-CR")}`;
+    }
+
+    function renderMenu() {
+      const categorias = [...new Set(MENU_ITEMS.map(item => item.categoria))];
+
+      menuContainer.innerHTML = categorias.map(categoria => {
+        const items = MENU_ITEMS
+          .map((item, index) => ({ ...item, index }))
+          .filter(item => item.categoria === categoria);
+
+        return `
+          <div class="categoria">
+            <h3>${escapeHtml(categoria)}</h3>
+            <div class="menu-grid">
+              ${items.map(item => `
+                <div class="producto">
+                  <h4>${escapeHtml(item.nombre)}</h4>
+                  <div class="precio">${formatearCRC(item.precio)}</div>
+                  <div class="controles">
+                    <button type="button" onclick="cambiarCantidad(${item.index}, -1)">−</button>
+                    <div class="cantidad" id="cantidad-${item.index}">0</div>
+                    <button type="button" onclick="cambiarCantidad(${item.index}, 1)">+</button>
+                  </div>
+                </div>
+              `).join("")}
+            </div>
+          </div>
+        `;
+      }).join("");
+    }
+
+    function cambiarCantidad(index, cambio) {
+      cantidades[index] = Math.max(0, cantidades[index] + cambio);
+      const cantidadBox = document.getElementById(`cantidad-${index}`);
+      if (cantidadBox) {
+        cantidadBox.textContent = cantidades[index];
+      }
+      renderPedidoSeleccionado();
+    }
+
     function actualizarCampoUbicacion() {
       const esExpress = tipoServicioSelect.value === "Express";
 
       if (esExpress) {
         bloqueUbicacion.style.display = "block";
+        notaExpressTotal.textContent = "El monto de express se asigna al ingresar el pedido en Zona Container.";
       } else {
         bloqueUbicacion.style.display = "none";
         direccionTextarea.value = "";
+        notaExpressTotal.textContent = "No incluye costo de express.";
       }
     }
 
-    function agregarProducto(nombre) {
-      const existente = pedidoSeleccionado.find(item => item.nombre === nombre);
+    function obtenerItemsSeleccionados() {
+      return MENU_ITEMS
+        .map((item, index) => ({
+          nombre: item.nombre,
+          precio: item.precio,
+          cantidad: cantidades[index]
+        }))
+        .filter(item => item.cantidad > 0);
+    }
 
-      if (existente) {
-        existente.cantidad += 1;
-      } else {
-        pedidoSeleccionado.push({ nombre, cantidad: 1 });
-      }
-
-      renderPedidoSeleccionado();
-      estadoApp.textContent = "Producto agregado.";
+    function calcularSubtotal() {
+      return obtenerItemsSeleccionados().reduce((acc, item) => acc + (item.precio * item.cantidad), 0);
     }
 
     function renderPedidoSeleccionado() {
-      if (pedidoSeleccionado.length === 0) {
+      const items = obtenerItemsSeleccionados();
+      const subtotal = calcularSubtotal();
+
+      if (items.length === 0) {
         pedidoTextarea.value = "";
-        return;
+      } else {
+        pedidoTextarea.value = items
+          .map(item => `${item.cantidad} x ${item.nombre} — ${formatearCRC(item.precio * item.cantidad)}`)
+          .join("\n");
       }
 
-      pedidoTextarea.value = pedidoSeleccionado
-        .map(item => `${item.cantidad} x ${item.nombre}`)
-        .join("\n");
+      subtotalTexto.textContent = formatearCRC(subtotal);
+      totalTexto.textContent = formatearCRC(subtotal);
     }
 
     function limpiarPedidoSeleccionado() {
-      pedidoSeleccionado = [];
+      cantidades = new Array(MENU_ITEMS.length).fill(0);
+      MENU_ITEMS.forEach((_, index) => {
+        const cantidadBox = document.getElementById(`cantidad-${index}`);
+        if (cantidadBox) cantidadBox.textContent = "0";
+      });
       renderPedidoSeleccionado();
       estadoApp.textContent = "Productos limpiados.";
     }
@@ -473,6 +574,8 @@
           <p><strong>Tipo de servicio:</strong> ${escapeHtml(pedido.tipoServicio)}</p>
           ${ubicacionHtml}
           <p><strong>Pedido:</strong><br>${escapeHtml(pedido.pedido).replace(/\n/g, "<br>")}</p>
+          <p><strong>Subtotal productos:</strong> ${escapeHtml(formatearCRC(pedido.subtotal))}</p>
+          <p><strong>Express:</strong> ${pedido.tipoServicio === "Express" ? "Se asigna aparte" : "No aplica"}</p>
           <p><strong>Notas:</strong> ${pedido.notas ? escapeHtml(pedido.notas) : "Sin notas"}</p>
           <small><strong>Fecha:</strong> ${escapeHtml(pedido.fecha)}</small>
           <div class="acciones">
@@ -495,21 +598,30 @@
     function limpiarFormulario() {
       pedidoForm.reset();
       direccionTextarea.value = "";
-      pedidoSeleccionado = [];
-      renderPedidoSeleccionado();
+      limpiarPedidoSeleccionado();
       actualizarCampoUbicacion();
       estadoApp.textContent = "Formulario limpio.";
     }
 
     function validarFormulario() {
+      const tipoServicio = tipoServicioSelect.value;
       const nombreCliente = document.getElementById("nombreCliente").value.trim();
       const telefono = document.getElementById("telefono").value.trim();
       const direccion = direccionTextarea.value.trim();
-      const pedido = document.getElementById("pedido").value.trim();
-      const tipoServicio = tipoServicioSelect.value;
+      const subtotal = calcularSubtotal();
 
-      if (!nombreCliente || !telefono || !pedido) {
-        estadoApp.textContent = "Completa nombre, teléfono y productos.";
+      if (!tipoServicio) {
+        estadoApp.textContent = "Selecciona el tipo de servicio.";
+        return false;
+      }
+
+      if (!nombreCliente || !telefono) {
+        estadoApp.textContent = "Completa nombre y teléfono.";
+        return false;
+      }
+
+      if (subtotal <= 0) {
+        estadoApp.textContent = "Escoge al menos un producto.";
         return false;
       }
 
@@ -527,7 +639,8 @@
         nombreCliente: document.getElementById("nombreCliente").value.trim(),
         telefono: document.getElementById("telefono").value.trim(),
         direccion: direccionTextarea.value.trim(),
-        pedido: document.getElementById("pedido").value.trim(),
+        pedido: pedidoTextarea.value.trim(),
+        subtotal: calcularSubtotal(),
         notas: document.getElementById("notas").value.trim(),
         fecha: new Date().toLocaleString("es-CR")
       };
@@ -561,15 +674,21 @@
       lineasMensaje.push(
         "Pedido:",
         datos.pedido,
-        `Notas: ${datos.notas || "Sin notas"}`
+        `Subtotal productos: ${formatearCRC(datos.subtotal)}`
       );
+
+      if (datos.tipoServicio === "Express") {
+        lineasMensaje.push("Monto de express: se asigna en Zona Container");
+      }
+
+      lineasMensaje.push(`Notas: ${datos.notas || "Sin notas"}`);
 
       const mensaje = lineasMensaje.join("\n");
       const numeroZonaContainer = "50663281021";
       const url = `https://wa.me/${numeroZonaContainer}?text=${encodeURIComponent(mensaje)}`;
 
       estadoApp.textContent = "Abriendo WhatsApp para enviar el pedido...";
-      window.open(url, "_blank");
+      window.location.href = url;
     }
 
     pedidoForm.addEventListener("submit", function(e) {
@@ -583,7 +702,9 @@
 
     tipoServicioSelect.addEventListener("change", actualizarCampoUbicacion);
 
+    renderMenu();
     actualizarCampoUbicacion();
+    renderPedidoSeleccionado();
     renderPedidos();
 
     if ("serviceWorker" in navigator) {
