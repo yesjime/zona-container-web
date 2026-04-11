@@ -3,921 +3,127 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Zona Container - Sistema Principal</title>
+  <title>Zona Container</title>
+
+  <meta name="theme-color" content="#000000" />
+  <meta name="description" content="App de pedidos de Zona Container" />
+
+  <link rel="manifest" href="./manifest.json" />
+  <link rel="icon" href="./icono.png" />
+  <link rel="apple-touch-icon" href="./icono.png" />
+
   <style>
-    * { box-sizing: border-box; }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+    }
 
     body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: #111;
-      color: #fff;
-    }
-
-    header {
       background: #000;
-      border-bottom: 3px solid #ffcc00;
-      padding: 20px;
-      text-align: center;
-    }
-
-    header h1 {
-      margin: 0;
-      color: #ffcc00;
-      font-size: 32px;
-    }
-
-    header p {
-      margin-top: 8px;
-      color: #ccc;
-    }
-
-    .contenedor {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 20px;
+      color: #fff;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       padding: 20px;
     }
 
     .card {
-      background: #1b1b1b;
-      border-radius: 14px;
-      padding: 20px;
-      box-shadow: 0 0 10px rgba(0,0,0,.25);
-    }
-
-    h2 {
-      margin-top: 0;
-      color: #ffcc00;
-    }
-
-    h3 {
-      margin-top: 20px;
-      margin-bottom: 10px;
-      color: #fff;
-    }
-
-    label {
-      display: block;
-      margin-bottom: 6px;
-      font-weight: bold;
-      color: #ddd;
-    }
-
-    input, select, textarea, button {
       width: 100%;
-      padding: 11px 12px;
-      border-radius: 10px;
-      border: none;
-      font-size: 15px;
-      margin-bottom: 14px;
+      max-width: 500px;
+      background: #111;
+      border: 2px solid #ffcc00;
+      border-radius: 18px;
+      padding: 28px;
+      text-align: center;
+      box-shadow: 0 0 20px rgba(255, 204, 0, 0.15);
     }
 
-    input, select, textarea {
-      background: #2b2b2b;
-      color: white;
+    h1 {
+      color: #ffcc00;
+      font-size: 2rem;
+      margin-bottom: 10px;
     }
 
-    button {
+    p {
+      color: #ddd;
+      margin-bottom: 24px;
+      line-height: 1.5;
+    }
+
+    .btn {
+      display: inline-block;
       background: #ffcc00;
-      color: black;
+      color: #000;
       font-weight: bold;
+      text-decoration: none;
+      padding: 14px 20px;
+      border-radius: 12px;
+      margin: 8px 0;
+      width: 100%;
+      border: none;
+      font-size: 1rem;
       cursor: pointer;
     }
 
-    button:hover {
+    .btn:hover {
       opacity: 0.95;
     }
 
-    .boton-secundario {
-      background: #25d366;
-      color: #fff;
-    }
-
-    .boton-estado {
-      background: #0d6efd;
-      color: #fff;
-    }
-
-    .boton-pago {
-      background: #198754;
-      color: #fff;
-    }
-
-    .boton-eliminar {
-      background: #d9534f;
-      color: #fff;
-    }
-
-    .boton-limpiar {
-      background: #6c757d;
-      color: #fff;
-    }
-
-    .producto-item {
-      display: flex;
-      justify-content: space-between;
-      gap: 10px;
-      align-items: center;
-      background: #252525;
-      padding: 10px;
-      border-radius: 10px;
-      margin-bottom: 10px;
-    }
-
-    .producto-item button {
-      width: auto;
-      margin: 0;
-      padding: 8px 12px;
-    }
-
-    .pedido {
-      background: #222;
-      border-left: 5px solid #ffcc00;
-      padding: 16px;
-      border-radius: 12px;
-      margin-bottom: 15px;
-    }
-
-    .pedido h3 {
-      margin-top: 0;
-      color: #ffcc00;
-    }
-
-    .pedido small {
+    .instalar-info {
+      margin-top: 18px;
+      font-size: 0.95rem;
       color: #bbb;
-    }
-
-    .acciones {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin-top: 12px;
-    }
-
-    .acciones button {
-      width: auto;
-      margin: 0;
-    }
-
-    .oculto {
-      display: none;
-    }
-
-    .badge {
-      display: inline-block;
-      padding: 5px 10px;
-      border-radius: 999px;
-      font-size: 12px;
-      font-weight: bold;
-      margin-bottom: 10px;
-      margin-right: 6px;
-    }
-
-    .badge-whatsapp-api {
-      background: #25d366;
-      color: #fff;
-    }
-
-    .badge-manual {
-      background: #0d6efd;
-      color: #fff;
-    }
-
-    .badge-presencial {
-      background: #fd7e14;
-      color: #fff;
-    }
-
-    .badge-express {
-      background: #ff5722;
-      color: #fff;
-    }
-
-    .badge-local {
-      background: #6f42c1;
-      color: #fff;
-    }
-
-    .badge-mesa {
-      background: #20c997;
-      color: #000;
-    }
-
-    .badge-nuevo {
-      background: #6c757d;
-      color: #fff;
-    }
-
-    .badge-cocina {
-      background: #fd7e14;
-      color: #fff;
-    }
-
-    .badge-listo {
-      background: #0dcaf0;
-      color: #000;
-    }
-
-    .badge-entregado {
-      background: #198754;
-      color: #fff;
-    }
-
-    .badge-pagado {
-      background: #20c997;
-      color: #000;
-    }
-
-    .badge-efectivo {
-      background: #198754;
-      color: #fff;
-    }
-
-    .badge-sinpe {
-      background: #0dcaf0;
-      color: #000;
-    }
-
-    .badge-tarjeta {
-      background: #6c757d;
-      color: #fff;
-    }
-
-    #ticketPrint {
-      display: none;
-    }
-
-    .modal-fondo {
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,.75);
-      display: none;
-      justify-content: center;
-      align-items: center;
-      padding: 20px;
-      z-index: 999;
-    }
-
-    .modal {
-      background: #1b1b1b;
-      border-radius: 14px;
-      padding: 20px;
-      width: 100%;
-      max-width: 450px;
-      box-shadow: 0 0 15px rgba(0,0,0,.35);
-    }
-
-    .modal h3 {
-      margin-top: 0;
-      color: #ffcc00;
-    }
-
-    @media (max-width: 980px) {
-      .contenedor {
-        grid-template-columns: 1fr;
-      }
-    }
-
-    @media print {
-      body * {
-        visibility: hidden;
-      }
-
-      #ticketPrint, #ticketPrint * {
-        visibility: visible;
-      }
-
-      #ticketPrint {
-        display: block;
-        position: absolute;
-        left: 0;
-        top: 0;
-        width: 100%;
-        background: white;
-        color: black;
-        padding: 20px;
-      }
     }
   </style>
 </head>
 <body>
-  <header>
+  <div class="card">
     <h1>🍔 Zona Container</h1>
-    <p>Sistema principal de pedidos + comandera</p>
-  </header>
+    <p>App oficial de pedidos de Zona Container.</p>
 
-  <div class="contenedor">
-    <div class="card">
-      <h2>Nuevo pedido</h2>
+    <a class="btn" href="https://wa.me/50663281021" target="_blank">
+      Hacer pedido por WhatsApp
+    </a>
 
-      <label for="tipoIngreso">Forma de ingreso</label>
-      <select id="tipoIngreso">
-        <option value="WhatsApp API">WhatsApp API</option>
-        <option value="Llamada / WhatsApp normal">Llamada / WhatsApp normal</option>
-        <option value="Presencial">Presencial</option>
-      </select>
+    <button class="btn" id="instalarBtn" style="display:none;">
+      Instalar aplicación
+    </button>
 
-      <label for="tipoServicio">Tipo de servicio</label>
-      <select id="tipoServicio" onchange="cambiarCamposServicio()">
-        <option value="Express">Express</option>
-        <option value="Recoger en local">Recoger en local</option>
-        <option value="Comer en el local">Comer en el local</option>
-      </select>
-
-      <label for="cliente">Nombre del cliente</label>
-      <input type="text" id="cliente" placeholder="Ej: Juan Pérez">
-
-      <label for="telefono">Teléfono</label>
-      <input type="text" id="telefono" placeholder="Ej: 8888-8888">
-
-      <div id="campoUbicacion">
-        <label for="ubicacion">Ubicación / Dirección para express</label>
-        <textarea id="ubicacion" rows="3" placeholder="Ej: Ojo de Agua, 100 m al norte de..."></textarea>
-      </div>
-
-      <div id="campoHora" class="oculto">
-        <label for="horaLlegada">Hora de llegada</label>
-        <input type="time" id="horaLlegada">
-      </div>
-
-      <label for="notas">Notas del pedido</label>
-      <textarea id="notas" rows="3" placeholder="Sin cebolla, salsa aparte, etc."></textarea>
-
-      <h3>Agregar productos</h3>
-
-      <label for="producto">Producto</label>
-      <select id="producto">
-        <option value="Hamburguesa Container|4500">Hamburguesa Container - ₡4500</option>
-        <option value="Chicken Crispy|3500">Chicken Crispy - ₡3500</option>
-        <option value="8 Alitas + Papas|5800">8 Alitas + Papas - ₡5800</option>
-        <option value="10 Alitas + Papas|7000">10 Alitas + Papas - ₡7000</option>
-        <option value="Quesadilla Pizzera|4500">Quesadilla Pizzera - ₡4500</option>
-        <option value="Container Jr|3250">Container Jr - ₡3250</option>
-      </select>
-
-      <label for="cantidad">Cantidad</label>
-      <input type="number" id="cantidad" min="1" value="1">
-
-      <button onclick="agregarProducto()">Agregar producto</button>
-
-      <div id="detallePedido"></div>
-      <h3 id="totalPedido">Total: ₡0</h3>
-
-      <button onclick="guardarPedido()">Guardar pedido</button>
-      <button class="boton-limpiar" onclick="limpiarTodosLosPedidos()">Borrar todos los pedidos</button>
-    </div>
-
-    <div class="card">
-      <h2>Pedidos registrados</h2>
-      <div id="estadoConexion" style="margin-bottom:12px;color:#bbb;">Conectando...</div>
-      <div id="listaPedidos"></div>
+    <div class="instalar-info">
+      Si no aparece el botón, abre el menú de Chrome y toca
+      <strong>Agregar a pantalla principal</strong>.
     </div>
   </div>
 
-  <div id="ticketPrint"></div>
+  <script>
+    if ("serviceWorker" in navigator) {
+      window.addEventListener("load", () => {
+        navigator.serviceWorker.register("./sw.js")
+          .then(() => console.log("Service Worker registrado"))
+          .catch((error) => console.log("Error registrando Service Worker:", error));
+      });
+    }
 
-  <div class="modal-fondo" id="modalPago">
-    <div class="modal">
-      <h3>Finalizar pago</h3>
-      <p id="textoPagoPedido"></p>
+    let deferredPrompt;
+    const instalarBtn = document.getElementById("instalarBtn");
 
-      <label for="metodoPagoFinal">Método de pago</label>
-      <select id="metodoPagoFinal" onchange="cambiarCamposPagoFinal()">
-        <option value="">Seleccione</option>
-        <option value="Efectivo">Efectivo</option>
-        <option value="SINPE">SINPE</option>
-        <option value="Tarjeta">Tarjeta</option>
-      </select>
-
-      <div id="campoComprobanteFinal" class="oculto">
-        <label for="comprobanteFinal">Número de comprobante</label>
-        <input type="text" id="comprobanteFinal" placeholder="Ej: 123456789">
-      </div>
-
-      <div class="acciones">
-        <button class="boton-pago" onclick="confirmarPago()">Confirmar pago e imprimir</button>
-        <button class="boton-eliminar" onclick="cerrarModalPago()">Cancelar</button>
-      </div>
-    </div>
-  </div>
-
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-app.js";
-    import {
-      initializeFirestore,
-      persistentLocalCache,
-      collection,
-      doc,
-      setDoc,
-      deleteDoc,
-      getDocs,
-      writeBatch,
-      onSnapshot,
-      query,
-      orderBy
-    } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-firestore.js";
-
-    const firebaseConfig = {
-      apiKey: "PEGAR_AQUI",
-      authDomain: "PEGAR_AQUI",
-      projectId: "PEGAR_AQUI",
-      storageBucket: "PEGAR_AQUI",
-      messagingSenderId: "PEGAR_AQUI",
-      appId: "PEGAR_AQUI"
-    };
-
-    const app = initializeApp(firebaseConfig);
-
-    const db = initializeFirestore(app, {
-      localCache: persistentLocalCache({})
+    window.addEventListener("beforeinstallprompt", (e) => {
+      e.preventDefault();
+      deferredPrompt = e;
+      instalarBtn.style.display = "inline-block";
     });
 
-    const pedidosRef = collection(db, "pedidos");
-    const configRef = collection(db, "config");
-
-    let productosSeleccionados = [];
-    let pedidos = [];
-    let ultimoNumeroPedido = 0;
-    let pedidoPagoActualId = null;
-    let unsubscribePedidos = null;
-
-    const estadoConexion = document.getElementById("estadoConexion");
-
-    function setEstadoConexion(texto) {
-      estadoConexion.textContent = texto;
-    }
-
-    function cambiarCamposServicio() {
-      const tipoServicio = document.getElementById("tipoServicio").value;
-      const campoUbicacion = document.getElementById("campoUbicacion");
-      const campoHora = document.getElementById("campoHora");
-
-      if (tipoServicio === "Express") {
-        campoUbicacion.classList.remove("oculto");
-        campoHora.classList.add("oculto");
-      } else if (tipoServicio === "Comer en el local") {
-        campoUbicacion.classList.add("oculto");
-        campoHora.classList.remove("oculto");
-      } else {
-        campoUbicacion.classList.add("oculto");
-        campoHora.classList.add("oculto");
-      }
-    }
-
-    function agregarProducto() {
-      const productoData = document.getElementById("producto").value.split("|");
-      const nombre = productoData[0];
-      const precio = parseInt(productoData[1], 10);
-      const cantidad = parseInt(document.getElementById("cantidad").value, 10);
-
-      if (!cantidad || cantidad < 1) {
-        alert("La cantidad debe ser mayor a 0.");
-        return;
-      }
-
-      productosSeleccionados.push({ nombre, precio, cantidad });
-      renderDetallePedido();
-    }
-
-    window.agregarProducto = agregarProducto;
-
-    function eliminarProducto(index) {
-      productosSeleccionados.splice(index, 1);
-      renderDetallePedido();
-    }
-
-    window.eliminarProducto = eliminarProducto;
-
-    function renderDetallePedido() {
-      const detalle = document.getElementById("detallePedido");
-      const total = productosSeleccionados.reduce((acc, item) => acc + (item.precio * item.cantidad), 0);
-
-      if (productosSeleccionados.length === 0) {
-        detalle.innerHTML = "<p style='color:#bbb;'>No hay productos agregados.</p>";
-      } else {
-        detalle.innerHTML = productosSeleccionados.map((item, index) => `
-          <div class="producto-item">
-            <div>
-              ${item.cantidad} x ${item.nombre}<br>
-              <small>₡${item.precio * item.cantidad}</small>
-            </div>
-            <button class="boton-eliminar" onclick="eliminarProducto(${index})">Quitar</button>
-          </div>
-        `).join("");
-      }
-
-      document.getElementById("totalPedido").innerText = "Total: ₡" + total;
-    }
-
-    function limpiarFormulario() {
-      document.getElementById("tipoIngreso").value = "WhatsApp API";
-      document.getElementById("tipoServicio").value = "Express";
-      document.getElementById("cliente").value = "";
-      document.getElementById("telefono").value = "";
-      document.getElementById("ubicacion").value = "";
-      document.getElementById("horaLlegada").value = "";
-      document.getElementById("notas").value = "";
-      document.getElementById("cantidad").value = 1;
-      cambiarCamposServicio();
-    }
-
-    async function cargarUltimoNumero() {
-      const snap = await getDocs(configRef);
-      let encontrado = false;
-
-      snap.forEach((d) => {
-        const data = d.data();
-        if (d.id === "ultimoNumeroPedido") {
-          ultimoNumeroPedido = Number(data.valor || 0);
-          encontrado = true;
-        }
-      });
-
-      if (!encontrado) {
-        ultimoNumeroPedido = 0;
-      }
-    }
-
-    async function guardarUltimoNumero() {
-      await setDoc(doc(db, "config", "ultimoNumeroPedido"), {
-        valor: ultimoNumeroPedido
-      });
-    }
-
-    async function guardarPedidoEnFirebase(pedido) {
-      await setDoc(doc(db, "pedidos", String(pedido.id)), pedido);
-    }
-
-    async function actualizarPedidoEnFirebase(pedido) {
-      await setDoc(doc(db, "pedidos", String(pedido.id)), pedido);
-    }
-
-    async function eliminarPedidoEnFirebase(id) {
-      await deleteDoc(doc(db, "pedidos", String(id)));
-    }
-
-    function escucharPedidosEnFirebase() {
-      const q = query(pedidosRef, orderBy("numero", "desc"));
-
-      unsubscribePedidos = onSnapshot(q, (snapshot) => {
-        pedidos = snapshot.docs.map(d => d.data());
-        setEstadoConexion("Sincronizado");
-        renderPedidos();
-      }, (error) => {
-        console.error(error);
-        setEstadoConexion("Error de conexión");
-      });
-    }
-
-    async function guardarPedido() {
-      try {
-        const tipoIngreso = document.getElementById("tipoIngreso").value;
-        const tipoServicio = document.getElementById("tipoServicio").value;
-        const cliente = document.getElementById("cliente").value.trim();
-        const telefono = document.getElementById("telefono").value.trim();
-        const ubicacion = document.getElementById("ubicacion").value.trim();
-        const horaLlegada = document.getElementById("horaLlegada").value;
-        const notas = document.getElementById("notas").value.trim();
-
-        if (!cliente) {
-          alert("Ingresá el nombre del cliente.");
-          return;
-        }
-
-        if (productosSeleccionados.length === 0) {
-          alert("Agregá al menos un producto.");
-          return;
-        }
-
-        if (tipoServicio === "Express" && !ubicacion) {
-          alert("Para express debés indicar la ubicación.");
-          return;
-        }
-
-        if (tipoServicio === "Comer en el local" && !horaLlegada) {
-          alert("Para comer en el local debés indicar la hora de llegada.");
-          return;
-        }
-
-        ultimoNumeroPedido += 1;
-
-        const total = productosSeleccionados.reduce((acc, item) => acc + (item.precio * item.cantidad), 0);
-
-        const pedido = {
-          id: Date.now(),
-          numero: ultimoNumeroPedido,
-          tipoIngreso,
-          tipoServicio,
-          cliente,
-          telefono,
-          ubicacion,
-          horaLlegada,
-          notas,
-          productos: [...productosSeleccionados],
-          total,
-          fecha: new Date().toLocaleString(),
-          estado: "Nuevo",
-          pagado: false,
-          metodoPago: "",
-          comprobante: ""
-        };
-
-        await guardarPedidoEnFirebase(pedido);
-        await guardarUltimoNumero();
-
-        productosSeleccionados = [];
-        renderDetallePedido();
-        limpiarFormulario();
-      } catch (error) {
-        console.error(error);
-        alert("No se pudo guardar el pedido.");
-      }
-    }
-
-    window.guardarPedido = guardarPedido;
-
-    function badgeIngreso(tipoIngreso) {
-      if (tipoIngreso === "WhatsApp API") {
-        return '<span class="badge badge-whatsapp-api">WhatsApp API</span>';
-      }
-      if (tipoIngreso === "Presencial") {
-        return '<span class="badge badge-presencial">Presencial</span>';
-      }
-      return '<span class="badge badge-manual">Llamada / WhatsApp normal</span>';
-    }
-
-    function badgeServicio(tipoServicio) {
-      if (tipoServicio === "Express") {
-        return '<span class="badge badge-express">Express</span>';
-      }
-      if (tipoServicio === "Recoger en local") {
-        return '<span class="badge badge-local">Recoger en local</span>';
-      }
-      return '<span class="badge badge-mesa">Comer en el local</span>';
-    }
-
-    function badgeEstado(estado) {
-      if (estado === "Nuevo") {
-        return '<span class="badge badge-nuevo">Nuevo</span>';
-      }
-      if (estado === "En cocina") {
-        return '<span class="badge badge-cocina">En cocina</span>';
-      }
-      if (estado === "Listo") {
-        return '<span class="badge badge-listo">Listo</span>';
-      }
-      return '<span class="badge badge-entregado">Entregado</span>';
-    }
-
-    function badgePago(metodoPago) {
-      if (!metodoPago) return "";
-      if (metodoPago === "Efectivo") {
-        return '<span class="badge badge-efectivo">Efectivo</span>';
-      }
-      if (metodoPago === "SINPE") {
-        return '<span class="badge badge-sinpe">SINPE</span>';
-      }
-      return '<span class="badge badge-tarjeta">Tarjeta</span>';
-    }
-
-    async function cambiarEstado(id, nuevoEstado) {
-      const pedido = pedidos.find(p => p.id === id);
-      if (!pedido) return;
-
-      pedido.estado = nuevoEstado;
-
-      try {
-        await actualizarPedidoEnFirebase(pedido);
-      } catch (error) {
-        console.error(error);
-        alert("No se pudo cambiar el estado.");
-      }
-    }
-
-    window.cambiarEstado = cambiarEstado;
-
-    function abrirModalPago(id) {
-      const pedido = pedidos.find(p => p.id === id);
-      if (!pedido) return;
-
-      if (pedido.pagado) {
-        alert("Este pedido ya fue pagado.");
-        return;
-      }
-
-      if (pedido.estado !== "Entregado") {
-        alert("Primero debés marcar el pedido como Entregado.");
-        return;
-      }
-
-      pedidoPagoActualId = id;
-      document.getElementById("textoPagoPedido").innerText = `Pedido #${pedido.numero} - Cliente: ${pedido.cliente}`;
-      document.getElementById("metodoPagoFinal").value = "";
-      document.getElementById("comprobanteFinal").value = "";
-      document.getElementById("campoComprobanteFinal").classList.add("oculto");
-      document.getElementById("modalPago").style.display = "flex";
-    }
-
-    window.abrirModalPago = abrirModalPago;
-
-    function cerrarModalPago() {
-      pedidoPagoActualId = null;
-      document.getElementById("modalPago").style.display = "none";
-    }
-
-    window.cerrarModalPago = cerrarModalPago;
-
-    function cambiarCamposPagoFinal() {
-      const metodo = document.getElementById("metodoPagoFinal").value;
-      const campo = document.getElementById("campoComprobanteFinal");
-
-      if (metodo === "SINPE" || metodo === "Tarjeta") {
-        campo.classList.remove("oculto");
-      } else {
-        campo.classList.add("oculto");
-        document.getElementById("comprobanteFinal").value = "";
-      }
-    }
-
-    window.cambiarCamposPagoFinal = cambiarCamposPagoFinal;
-
-    async function confirmarPago() {
-      const metodo = document.getElementById("metodoPagoFinal").value;
-      const comprobante = document.getElementById("comprobanteFinal").value.trim();
-
-      if (!pedidoPagoActualId) {
-        alert("No hay pedido seleccionado.");
-        return;
-      }
-
-      if (!metodo) {
-        alert("Debés seleccionar un método de pago.");
-        return;
-      }
-
-      if ((metodo === "SINPE" || metodo === "Tarjeta") && !comprobante) {
-        alert("Debés indicar el número de comprobante.");
-        return;
-      }
-
-      const pedido = pedidos.find(p => p.id === pedidoPagoActualId);
-      if (!pedido) return;
-
-      pedido.pagado = true;
-      pedido.metodoPago = metodo;
-      pedido.comprobante = comprobante;
-
-      try {
-        await actualizarPedidoEnFirebase(pedido);
-        cerrarModalPago();
-        imprimirPedidoFinal(pedido.id);
-      } catch (error) {
-        console.error(error);
-        alert("No se pudo registrar el pago.");
-      }
-    }
-
-    window.confirmarPago = confirmarPago;
-
-    function renderPedidos() {
-      const lista = document.getElementById("listaPedidos");
-
-      if (pedidos.length === 0) {
-        lista.innerHTML = "<p style='color:#bbb;'>No hay pedidos registrados.</p>";
-        return;
-      }
-
-      lista.innerHTML = pedidos.map((pedido) => `
-        <div class="pedido">
-          <h3>Pedido #${pedido.numero}</h3>
-          <small>${pedido.fecha}</small><br><br>
-
-          ${badgeIngreso(pedido.tipoIngreso)}
-          ${badgeServicio(pedido.tipoServicio)}
-          ${badgeEstado(pedido.estado)}
-          ${pedido.pagado ? '<span class="badge badge-pagado">Pagado</span>' : ''}
-          ${pedido.pagado ? badgePago(pedido.metodoPago) : ''}
-
-          <p><strong>Cliente:</strong> ${pedido.cliente}</p>
-          <p><strong>Teléfono:</strong> ${pedido.telefono || "-"}</p>
-          <p><strong>Ubicación:</strong> ${pedido.tipoServicio === "Express" ? (pedido.ubicacion || "-") : "No aplica"}</p>
-          <p><strong>Hora de llegada:</strong> ${pedido.tipoServicio === "Comer en el local" ? pedido.horaLlegada : "No aplica"}</p>
-          <p><strong>Notas:</strong> ${pedido.notas || "-"}</p>
-          <p><strong>Productos:</strong><br>
-            ${pedido.productos.map(item => `${item.cantidad} x ${item.nombre} - ₡${item.precio * item.cantidad}`).join("<br>")}
-          </p>
-          <p><strong>Total:</strong> ₡${pedido.total}</p>
-          <p><strong>Comprobante:</strong> ${pedido.pagado ? (pedido.comprobante || "No aplica") : "Pendiente"}</p>
-
-          <div class="acciones">
-            <button class="boton-estado" onclick="cambiarEstado(${pedido.id}, 'Nuevo')">Nuevo</button>
-            <button class="boton-estado" onclick="cambiarEstado(${pedido.id}, 'En cocina')">En cocina</button>
-            <button class="boton-estado" onclick="cambiarEstado(${pedido.id}, 'Listo')">Listo</button>
-            <button class="boton-estado" onclick="cambiarEstado(${pedido.id}, 'Entregado')">Entregado</button>
-            <button class="boton-pago" onclick="abrirModalPago(${pedido.id})">Finalizar pago</button>
-            <button class="boton-eliminar" onclick="eliminarPedido(${pedido.id})">Eliminar</button>
-          </div>
-        </div>
-      `).join("");
-    }
-
-    async function eliminarPedido(id) {
-      try {
-        await eliminarPedidoEnFirebase(id);
-      } catch (error) {
-        console.error(error);
-        alert("No se pudo eliminar el pedido.");
-      }
-    }
-
-    window.eliminarPedido = eliminarPedido;
-
-    async function limpiarTodosLosPedidos() {
-      const confirmar = confirm("¿Seguro que querés borrar todos los pedidos?");
-      if (!confirmar) return;
-
-      try {
-        const snap = await getDocs(pedidosRef);
-        const batch = writeBatch(db);
-
-        snap.forEach((d) => {
-          batch.delete(d.ref);
-        });
-
-        await batch.commit();
-        ultimoNumeroPedido = 0;
-        await guardarUltimoNumero();
-        alert("Todos los pedidos fueron eliminados.");
-      } catch (error) {
-        console.error(error);
-        alert("No se pudieron borrar los pedidos.");
-      }
-    }
-
-    window.limpiarTodosLosPedidos = limpiarTodosLosPedidos;
-
-    function imprimirPedidoFinal(id) {
-      const pedido = pedidos.find(p => p.id === id);
-      if (!pedido) return;
-
-      if (!pedido.pagado) {
-        alert("No se puede imprimir. El pedido no está pagado.");
-        return;
-      }
-
-      if ((pedido.metodoPago === "SINPE" || pedido.metodoPago === "Tarjeta") && !pedido.comprobante) {
-        alert("No se puede imprimir. Falta el comprobante.");
-        return;
-      }
-
-      const ticket = document.getElementById("ticketPrint");
-
-      ticket.innerHTML = `
-        <div style="font-family: Arial, sans-serif; font-size: 14px;">
-          <h2 style="margin:0;">ZONA CONTAINER</h2>
-          <p style="margin:6px 0;"><strong>Pedido #${pedido.numero}</strong></p>
-          <p style="margin:6px 0;"><strong>Fecha:</strong> ${pedido.fecha}</p>
-          <hr>
-          <p style="margin:6px 0;"><strong>Ingreso:</strong> ${pedido.tipoIngreso}</p>
-          <p style="margin:6px 0;"><strong>Servicio:</strong> ${pedido.tipoServicio}</p>
-          <p style="margin:6px 0;"><strong>Estado final:</strong> ${pedido.estado}</p>
-          <p style="margin:6px 0;"><strong>Cliente:</strong> ${pedido.cliente}</p>
-          <p style="margin:6px 0;"><strong>Tel:</strong> ${pedido.telefono || "-"}</p>
-          <p style="margin:6px 0;"><strong>Ubicación:</strong> ${pedido.tipoServicio === "Express" ? (pedido.ubicacion || "-") : "No aplica"}</p>
-          <p style="margin:6px 0;"><strong>Hora llegada:</strong> ${pedido.tipoServicio === "Comer en el local" ? pedido.horaLlegada : "No aplica"}</p>
-          <hr>
-          ${pedido.productos.map(item => `<p style="margin:6px 0;">${item.cantidad} x ${item.nombre} - ₡${item.precio * item.cantidad}</p>`).join("")}
-          <hr>
-          <p style="margin:6px 0;"><strong>Notas:</strong> ${pedido.notas || "-"}</p>
-          <p style="margin:6px 0;"><strong>Total:</strong> ₡${pedido.total}</p>
-          <hr>
-          <p style="margin:6px 0;"><strong>Método de pago:</strong> ${pedido.metodoPago}</p>
-          <p style="margin:6px 0;"><strong>Comprobante:</strong> ${pedido.comprobante || "No aplica"}</p>
-          <p style="margin:6px 0;"><strong>Pagado:</strong> Sí</p>
-        </div>
-      `;
-
-      window.print();
-    }
-
-    cambiarCamposServicio();
-    renderDetallePedido();
-
-    async function iniciar() {
-      try {
-        setEstadoConexion("Cargando configuración...");
-        await cargarUltimoNumero();
-        setEstadoConexion("Escuchando pedidos...");
-        escucharPedidosEnFirebase();
-      } catch (error) {
-        console.error(error);
-        setEstadoConexion("Error al iniciar Firebase");
-        alert("Revisá tu firebaseConfig y que Firestore esté creado.");
-      }
-    }
-
-    iniciar();
+    instalarBtn.addEventListener("click", async () => {
+      if (!deferredPrompt) return;
+      deferredPrompt.prompt();
+      const choiceResult = await deferredPrompt.userChoice;
+      console.log("Resultado instalación:", choiceResult.outcome);
+      deferredPrompt = null;
+      instalarBtn.style.display = "none";
+    });
   </script>
 </body>
 </html>
