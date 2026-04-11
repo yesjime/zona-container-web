@@ -104,6 +104,10 @@
       cursor: pointer;
     }
 
+    .btn:hover {
+      opacity: 0.96;
+    }
+
     .btn-secundario {
       background: #333;
       color: #fff;
@@ -113,6 +117,7 @@
       margin-top: 12px;
       color: #bbb;
       line-height: 1.4;
+      font-size: 0.95rem;
     }
 
     .menu-grid {
@@ -150,6 +155,13 @@
       color: #000;
       font-weight: bold;
       cursor: pointer;
+    }
+
+    .nota {
+      font-size: 0.9rem;
+      color: #bcbcbc;
+      margin-top: 8px;
+      line-height: 1.4;
     }
 
     .pedido-item {
@@ -247,6 +259,9 @@
         <button type="button" class="btn btn-secundario" onclick="obtenerUbicacion()">
           Escoger ubicación actual
         </button>
+        <div class="nota">
+          La app pedirá permiso para usar la ubicación del celular.
+        </div>
 
         <label>Escoge tus productos</label>
         <div class="menu-grid">
@@ -310,6 +325,7 @@
         <textarea id="notas" placeholder="Sin cebolla, salsa aparte, pagar con SINPE, etc."></textarea>
 
         <button type="submit" class="btn">Guardar pedido</button>
+        <button type="button" class="btn" onclick="enviarPedidoWhatsApp()">Enviar pedido por WhatsApp</button>
         <button type="button" class="btn btn-secundario" onclick="limpiarFormulario()">Limpiar formulario</button>
         <button type="button" class="btn" id="instalarBtn">Instalar aplicación</button>
 
@@ -332,6 +348,15 @@
     const pedidoTextarea = document.getElementById("pedido");
 
     let pedidoSeleccionado = [];
+
+    function escapeHtml(texto) {
+      return texto
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+    }
 
     function agregarProducto(nombre) {
       const existente = pedidoSeleccionado.find(item => item.nombre === nombre);
@@ -414,18 +439,17 @@
 
       pedidos.slice().reverse().forEach((pedido, indexReversed) => {
         const indexReal = pedidos.length - 1 - indexReversed;
-
         const item = document.createElement("div");
         item.className = "pedido-item";
 
         item.innerHTML = `
-          <h3>${pedido.nombreCliente}</h3>
-          <p><strong>Teléfono:</strong> ${pedido.telefono}</p>
-          <p><strong>Tipo de servicio:</strong> ${pedido.tipoServicio}</p>
-          <p><strong>Ubicación:</strong> <a href="${pedido.direccion}" target="_blank" style="color:#ffcc00;">Ver ubicación</a></p>
-          <p><strong>Pedido:</strong><br>${pedido.pedido.replace(/\n/g, "<br>")}</p>
-          <p><strong>Notas:</strong> ${pedido.notas || "Sin notas"}</p>
-          <small><strong>Fecha:</strong> ${pedido.fecha}</small>
+          <h3>${escapeHtml(pedido.nombreCliente)}</h3>
+          <p><strong>Teléfono:</strong> ${escapeHtml(pedido.telefono)}</p>
+          <p><strong>Tipo de servicio:</strong> ${escapeHtml(pedido.tipoServicio)}</p>
+          <p><strong>Ubicación:</strong> <a href="${escapeHtml(pedido.direccion)}" target="_blank" style="color:#ffcc00;">Ver ubicación</a></p>
+          <p><strong>Pedido:</strong><br>${escapeHtml(pedido.pedido).replace(/\n/g, "<br>")}</p>
+          <p><strong>Notas:</strong> ${pedido.notas ? escapeHtml(pedido.notas) : "Sin notas"}</p>
+          <small><strong>Fecha:</strong> ${escapeHtml(pedido.fecha)}</small>
           <div class="acciones">
             <button class="btn-eliminar" onclick="eliminarPedido(${indexReal})">Eliminar</button>
           </div>
@@ -451,10 +475,22 @@
       estadoApp.textContent = "Formulario limpio.";
     }
 
-    pedidoForm.addEventListener("submit", function(e) {
-      e.preventDefault();
+    function validarFormulario() {
+      const nombreCliente = document.getElementById("nombreCliente").value.trim();
+      const telefono = document.getElementById("telefono").value.trim();
+      const direccion = document.getElementById("direccion").value.trim();
+      const pedido = document.getElementById("pedido").value.trim();
 
-      const nuevoPedido = {
+      if (!nombreCliente || !telefono || !direccion || !pedido) {
+        estadoApp.textContent = "Completa nombre, teléfono, ubicación y productos.";
+        return false;
+      }
+
+      return true;
+    }
+
+    function obtenerDatosFormulario() {
+      return {
         tipoServicio: document.getElementById("tipoServicio").value,
         nombreCliente: document.getElementById("nombreCliente").value.trim(),
         telefono: document.getElementById("telefono").value.trim(),
@@ -463,22 +499,47 @@
         notas: document.getElementById("notas").value.trim(),
         fecha: new Date().toLocaleString("es-CR")
       };
+    }
 
-      if (!nuevoPedido.nombreCliente || !nuevoPedido.telefono || !nuevoPedido.direccion || !nuevoPedido.pedido) {
-        estadoApp.textContent = "Completa nombre, teléfono, ubicación y productos.";
-        return;
-      }
-
+    function guardarPedidoActual() {
+      const nuevoPedido = obtenerDatosFormulario();
       const pedidos = obtenerPedidos();
       pedidos.push(nuevoPedido);
       guardarPedidos(pedidos);
-
-      pedidoForm.reset();
-      document.getElementById("direccion").value = "";
-      pedidoSeleccionado = [];
-      renderPedidoSeleccionado();
       renderPedidos();
-      estadoApp.textContent = "Pedido guardado correctamente.";
+    }
+
+    function enviarPedidoWhatsApp() {
+      if (!validarFormulario()) return;
+
+      const datos = obtenerDatosFormulario();
+
+      const mensaje = [
+        "Hola, quiero hacer un pedido en Zona Container:",
+        "",
+        `Nombre: ${datos.nombreCliente}`,
+        `Teléfono: ${datos.telefono}`,
+        `Tipo de servicio: ${datos.tipoServicio}`,
+        `Ubicación: ${datos.direccion}`,
+        "Pedido:",
+        datos.pedido,
+        `Notas: ${datos.notas || "Sin notas"}`
+      ].join("\n");
+
+      const numeroZonaContainer = "50663281021";
+      const url = `https://wa.me/${numeroZonaContainer}?text=${encodeURIComponent(mensaje)}`;
+
+      estadoApp.textContent = "Abriendo WhatsApp para enviar el pedido...";
+      window.open(url, "_blank");
+    }
+
+    pedidoForm.addEventListener("submit", function(e) {
+      e.preventDefault();
+
+      if (!validarFormulario()) return;
+
+      guardarPedidoActual();
+      estadoApp.textContent = "Pedido guardado correctamente. Ahora puedes enviarlo por WhatsApp.";
     });
 
     renderPedidos();
