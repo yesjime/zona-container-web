@@ -219,6 +219,10 @@
       display: none;
     }
 
+    #bloqueUbicacion {
+      display: none;
+    }
+
     @media (max-width: 900px) {
       .container {
         grid-template-columns: 1fr;
@@ -254,13 +258,15 @@
         <label for="telefono">Teléfono</label>
         <input type="tel" id="telefono" placeholder="Ej: 8888-8888" required />
 
-        <label for="direccion">Ubicación actual</label>
-        <textarea id="direccion" placeholder="Toca el botón para escoger tu ubicación actual" readonly></textarea>
-        <button type="button" class="btn btn-secundario" onclick="obtenerUbicacion()">
-          Escoger ubicación actual
-        </button>
-        <div class="nota">
-          La app pedirá permiso para usar la ubicación del celular.
+        <div id="bloqueUbicacion">
+          <label for="direccion">Ubicación actual</label>
+          <textarea id="direccion" placeholder="Toca el botón para escoger tu ubicación actual" readonly></textarea>
+          <button type="button" class="btn btn-secundario" onclick="obtenerUbicacion()">
+            Escoger ubicación actual
+          </button>
+          <div class="nota">
+            Esta opción solo aparece para pedidos Express.
+          </div>
         </div>
 
         <label>Escoge tus productos</label>
@@ -346,16 +352,30 @@
     const listaPedidos = document.getElementById("listaPedidos");
     const estadoApp = document.getElementById("estadoApp");
     const pedidoTextarea = document.getElementById("pedido");
+    const tipoServicioSelect = document.getElementById("tipoServicio");
+    const bloqueUbicacion = document.getElementById("bloqueUbicacion");
+    const direccionTextarea = document.getElementById("direccion");
 
     let pedidoSeleccionado = [];
 
     function escapeHtml(texto) {
-      return texto
+      return String(texto)
         .replace(/&/g, "&amp;")
         .replace(/</g, "&lt;")
         .replace(/>/g, "&gt;")
         .replace(/"/g, "&quot;")
         .replace(/'/g, "&#039;");
+    }
+
+    function actualizarCampoUbicacion() {
+      const esExpress = tipoServicioSelect.value === "Express";
+
+      if (esExpress) {
+        bloqueUbicacion.style.display = "block";
+      } else {
+        bloqueUbicacion.style.display = "none";
+        direccionTextarea.value = "";
+      }
     }
 
     function agregarProducto(nombre) {
@@ -401,7 +421,7 @@
           const lat = position.coords.latitude;
           const lng = position.coords.longitude;
           const linkMaps = `https://www.google.com/maps?q=${lat},${lng}`;
-          document.getElementById("direccion").value = linkMaps;
+          direccionTextarea.value = linkMaps;
           estadoApp.textContent = "Ubicación agregada correctamente.";
         },
         function(error) {
@@ -442,11 +462,16 @@
         const item = document.createElement("div");
         item.className = "pedido-item";
 
+        const ubicacionHtml =
+          pedido.tipoServicio === "Express" && pedido.direccion
+            ? `<p><strong>Ubicación:</strong> <a href="${escapeHtml(pedido.direccion)}" target="_blank" style="color:#ffcc00;">Ver ubicación</a></p>`
+            : `<p><strong>Ubicación:</strong> No aplica</p>`;
+
         item.innerHTML = `
           <h3>${escapeHtml(pedido.nombreCliente)}</h3>
           <p><strong>Teléfono:</strong> ${escapeHtml(pedido.telefono)}</p>
           <p><strong>Tipo de servicio:</strong> ${escapeHtml(pedido.tipoServicio)}</p>
-          <p><strong>Ubicación:</strong> <a href="${escapeHtml(pedido.direccion)}" target="_blank" style="color:#ffcc00;">Ver ubicación</a></p>
+          ${ubicacionHtml}
           <p><strong>Pedido:</strong><br>${escapeHtml(pedido.pedido).replace(/\n/g, "<br>")}</p>
           <p><strong>Notas:</strong> ${pedido.notas ? escapeHtml(pedido.notas) : "Sin notas"}</p>
           <small><strong>Fecha:</strong> ${escapeHtml(pedido.fecha)}</small>
@@ -469,20 +494,27 @@
 
     function limpiarFormulario() {
       pedidoForm.reset();
-      document.getElementById("direccion").value = "";
+      direccionTextarea.value = "";
       pedidoSeleccionado = [];
       renderPedidoSeleccionado();
+      actualizarCampoUbicacion();
       estadoApp.textContent = "Formulario limpio.";
     }
 
     function validarFormulario() {
       const nombreCliente = document.getElementById("nombreCliente").value.trim();
       const telefono = document.getElementById("telefono").value.trim();
-      const direccion = document.getElementById("direccion").value.trim();
+      const direccion = direccionTextarea.value.trim();
       const pedido = document.getElementById("pedido").value.trim();
+      const tipoServicio = tipoServicioSelect.value;
 
-      if (!nombreCliente || !telefono || !direccion || !pedido) {
-        estadoApp.textContent = "Completa nombre, teléfono, ubicación y productos.";
+      if (!nombreCliente || !telefono || !pedido) {
+        estadoApp.textContent = "Completa nombre, teléfono y productos.";
+        return false;
+      }
+
+      if (tipoServicio === "Express" && !direccion) {
+        estadoApp.textContent = "Debes escoger la ubicación actual para pedidos Express.";
         return false;
       }
 
@@ -491,10 +523,10 @@
 
     function obtenerDatosFormulario() {
       return {
-        tipoServicio: document.getElementById("tipoServicio").value,
+        tipoServicio: tipoServicioSelect.value,
         nombreCliente: document.getElementById("nombreCliente").value.trim(),
         telefono: document.getElementById("telefono").value.trim(),
-        direccion: document.getElementById("direccion").value.trim(),
+        direccion: direccionTextarea.value.trim(),
         pedido: document.getElementById("pedido").value.trim(),
         notas: document.getElementById("notas").value.trim(),
         fecha: new Date().toLocaleString("es-CR")
@@ -514,18 +546,25 @@
 
       const datos = obtenerDatosFormulario();
 
-      const mensaje = [
+      const lineasMensaje = [
         "Hola, quiero hacer un pedido en Zona Container:",
         "",
         `Nombre: ${datos.nombreCliente}`,
         `Teléfono: ${datos.telefono}`,
-        `Tipo de servicio: ${datos.tipoServicio}`,
-        `Ubicación: ${datos.direccion}`,
+        `Tipo de servicio: ${datos.tipoServicio}`
+      ];
+
+      if (datos.tipoServicio === "Express" && datos.direccion) {
+        lineasMensaje.push(`Ubicación: ${datos.direccion}`);
+      }
+
+      lineasMensaje.push(
         "Pedido:",
         datos.pedido,
         `Notas: ${datos.notas || "Sin notas"}`
-      ].join("\n");
+      );
 
+      const mensaje = lineasMensaje.join("\n");
       const numeroZonaContainer = "50663281021";
       const url = `https://wa.me/${numeroZonaContainer}?text=${encodeURIComponent(mensaje)}`;
 
@@ -542,6 +581,9 @@
       estadoApp.textContent = "Pedido guardado correctamente. Ahora puedes enviarlo por WhatsApp.";
     });
 
+    tipoServicioSelect.addEventListener("change", actualizarCampoUbicacion);
+
+    actualizarCampoUbicacion();
     renderPedidos();
 
     if ("serviceWorker" in navigator) {
