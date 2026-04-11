@@ -1,7 +1,8 @@
-const CACHE_NAME = "zona-container-v4";
+const CACHE_NAME = "zona-container-v7";
 const urlsToCache = [
   "./",
   "./index.html",
+  "./admin.html",
   "./manifest.json",
   "./icono.png"
 ];
