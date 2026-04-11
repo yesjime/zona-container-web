@@ -24,29 +24,28 @@
       background: #000;
       color: #fff;
       min-height: 100vh;
-      padding: 20px;
+      padding: 16px;
     }
 
     .header {
       text-align: center;
-      margin-bottom: 25px;
+      margin-bottom: 20px;
     }
 
     .header h1 {
       color: #ffcc00;
       font-size: 2rem;
-      margin-bottom: 8px;
+      margin-bottom: 6px;
     }
 
     .header p {
       color: #ccc;
-      font-size: 1rem;
     }
 
     .container {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 20px;
+      gap: 18px;
       max-width: 1200px;
       margin: 0 auto;
     }
@@ -55,43 +54,38 @@
       background: #111;
       border: 2px solid #ffcc00;
       border-radius: 18px;
-      padding: 22px;
-      box-shadow: 0 0 20px rgba(255, 204, 0, 0.12);
+      padding: 20px;
+      box-shadow: 0 0 18px rgba(255, 204, 0, 0.12);
     }
 
     .card h2 {
       color: #ffcc00;
-      margin-bottom: 18px;
-      font-size: 1.6rem;
+      margin-bottom: 14px;
+      font-size: 1.4rem;
     }
 
     label {
       display: block;
-      margin-bottom: 8px;
-      margin-top: 14px;
+      margin-top: 12px;
+      margin-bottom: 6px;
       font-weight: bold;
-      color: #fff;
     }
 
-    input,
-    select,
-    textarea {
+    input, select, textarea {
       width: 100%;
-      padding: 14px;
+      padding: 13px;
       border-radius: 12px;
       border: 1px solid #333;
-      background: #1d1d1d;
+      background: #1c1c1c;
       color: #fff;
       font-size: 1rem;
-      outline: none;
     }
 
     textarea {
-      min-height: 110px;
+      min-height: 100px;
       resize: vertical;
     }
 
-    input[readonly],
     textarea[readonly] {
       background: #181818;
       color: #ddd;
@@ -99,8 +93,8 @@
 
     .btn {
       width: 100%;
-      margin-top: 18px;
-      padding: 14px;
+      margin-top: 12px;
+      padding: 13px;
       border: none;
       border-radius: 12px;
       background: #ffcc00;
@@ -110,21 +104,52 @@
       cursor: pointer;
     }
 
-    .btn:hover {
-      opacity: 0.95;
-    }
-
     .btn-secundario {
       background: #333;
       color: #fff;
-      margin-top: 10px;
     }
 
     .estado {
       margin-top: 12px;
       color: #bbb;
-      font-size: 0.95rem;
       line-height: 1.4;
+    }
+
+    .menu-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .producto {
+      background: #1a1a1a;
+      border: 1px solid #333;
+      border-radius: 14px;
+      padding: 12px;
+    }
+
+    .producto h3 {
+      color: #ffcc00;
+      font-size: 1rem;
+      margin-bottom: 8px;
+    }
+
+    .producto p {
+      color: #ccc;
+      font-size: 0.9rem;
+      margin-bottom: 10px;
+    }
+
+    .producto button {
+      width: 100%;
+      padding: 10px;
+      border: none;
+      border-radius: 10px;
+      background: #ffcc00;
+      color: #000;
+      font-weight: bold;
+      cursor: pointer;
     }
 
     .pedido-item {
@@ -139,7 +164,6 @@
     .pedido-item h3 {
       color: #ffcc00;
       margin-bottom: 8px;
-      font-size: 1.1rem;
     }
 
     .pedido-item p {
@@ -152,12 +176,6 @@
     .pedido-item small {
       color: #999;
       display: block;
-      margin-top: 8px;
-    }
-
-    .vacio {
-      color: #bbb;
-      font-size: 1rem;
       margin-top: 8px;
     }
 
@@ -178,32 +196,23 @@
 
     .btn-eliminar {
       background: #a32020;
-      color: white;
+      color: #fff;
+    }
+
+    .vacio {
+      color: #bbb;
     }
 
     #instalarBtn {
       display: none;
-      margin-top: 14px;
-      width: 100%;
-      padding: 14px;
-      border: none;
-      border-radius: 12px;
-      background: #ffcc00;
-      color: #000;
-      font-weight: bold;
-      font-size: 1rem;
-      cursor: pointer;
-    }
-
-    .nota-ubicacion {
-      font-size: 0.92rem;
-      color: #bbb;
-      margin-top: 8px;
-      line-height: 1.4;
     }
 
     @media (max-width: 900px) {
       .container {
+        grid-template-columns: 1fr;
+      }
+
+      .menu-grid {
         grid-template-columns: 1fr;
       }
     }
@@ -220,16 +229,6 @@
       <h2>Nuevo pedido</h2>
 
       <form id="pedidoForm">
-        <label for="formaIngreso">Forma de ingreso</label>
-        <select id="formaIngreso">
-          <option>App</option>
-          <option>WhatsApp</option>
-          <option>Llamada</option>
-          <option>En local</option>
-          <option>Facebook</option>
-          <option>Instagram</option>
-        </select>
-
         <label for="tipoServicio">Tipo de servicio</label>
         <select id="tipoServicio">
           <option>Express</option>
@@ -248,19 +247,71 @@
         <button type="button" class="btn btn-secundario" onclick="obtenerUbicacion()">
           Escoger ubicación actual
         </button>
-        <div class="nota-ubicacion">
-          La app te pedirá permiso para usar tu ubicación y enviarla con el pedido.
+
+        <label>Escoge tus productos</label>
+        <div class="menu-grid">
+          <div class="producto">
+            <h3>Hamburguesa Tradicional</h3>
+            <p>Toca para agregar</p>
+            <button type="button" onclick="agregarProducto('Hamburguesa Tradicional')">Agregar</button>
+          </div>
+
+          <div class="producto">
+            <h3>Chicken Crispy</h3>
+            <p>Toca para agregar</p>
+            <button type="button" onclick="agregarProducto('Chicken Crispy')">Agregar</button>
+          </div>
+
+          <div class="producto">
+            <h3>Container Jr</h3>
+            <p>Toca para agregar</p>
+            <button type="button" onclick="agregarProducto('Container Jr')">Agregar</button>
+          </div>
+
+          <div class="producto">
+            <h3>8 alitas + papas</h3>
+            <p>Toca para agregar</p>
+            <button type="button" onclick="agregarProducto('8 alitas + papas')">Agregar</button>
+          </div>
+
+          <div class="producto">
+            <h3>10 alitas + papas</h3>
+            <p>Toca para agregar</p>
+            <button type="button" onclick="agregarProducto('10 alitas + papas')">Agregar</button>
+          </div>
+
+          <div class="producto">
+            <h3>La Brutal</h3>
+            <p>Toca para agregar</p>
+            <button type="button" onclick="agregarProducto('La Brutal')">Agregar</button>
+          </div>
+
+          <div class="producto">
+            <h3>Quesadilla Pizzera</h3>
+            <p>Toca para agregar</p>
+            <button type="button" onclick="agregarProducto('Quesadilla Pizzera')">Agregar</button>
+          </div>
+
+          <div class="producto">
+            <h3>Tacos de Birria</h3>
+            <p>Toca para agregar</p>
+            <button type="button" onclick="agregarProducto('Tacos de Birria')">Agregar</button>
+          </div>
         </div>
 
-        <label for="pedido">Pedido</label>
-        <textarea id="pedido" placeholder="Ej: 2 hamburguesas tradicionales + papas, 1 orden de alitas BBQ" required></textarea>
+        <label for="pedido">Pedido seleccionado</label>
+        <textarea id="pedido" placeholder="Aquí aparecerán los productos escogidos" readonly></textarea>
+
+        <button type="button" class="btn btn-secundario" onclick="limpiarPedidoSeleccionado()">
+          Limpiar productos
+        </button>
 
         <label for="notas">Notas del pedido</label>
         <textarea id="notas" placeholder="Sin cebolla, salsa aparte, pagar con SINPE, etc."></textarea>
 
         <button type="submit" class="btn">Guardar pedido</button>
         <button type="button" class="btn btn-secundario" onclick="limpiarFormulario()">Limpiar formulario</button>
-        <button type="button" id="instalarBtn">Instalar aplicación</button>
+        <button type="button" class="btn" id="instalarBtn">Instalar aplicación</button>
 
         <div class="estado" id="estadoApp">Listo para registrar pedidos.</div>
       </form>
@@ -278,6 +329,70 @@
     const pedidoForm = document.getElementById("pedidoForm");
     const listaPedidos = document.getElementById("listaPedidos");
     const estadoApp = document.getElementById("estadoApp");
+    const pedidoTextarea = document.getElementById("pedido");
+
+    let pedidoSeleccionado = [];
+
+    function agregarProducto(nombre) {
+      const existente = pedidoSeleccionado.find(item => item.nombre === nombre);
+
+      if (existente) {
+        existente.cantidad += 1;
+      } else {
+        pedidoSeleccionado.push({ nombre, cantidad: 1 });
+      }
+
+      renderPedidoSeleccionado();
+      estadoApp.textContent = "Producto agregado.";
+    }
+
+    function renderPedidoSeleccionado() {
+      if (pedidoSeleccionado.length === 0) {
+        pedidoTextarea.value = "";
+        return;
+      }
+
+      pedidoTextarea.value = pedidoSeleccionado
+        .map(item => `${item.cantidad} x ${item.nombre}`)
+        .join("\n");
+    }
+
+    function limpiarPedidoSeleccionado() {
+      pedidoSeleccionado = [];
+      renderPedidoSeleccionado();
+      estadoApp.textContent = "Productos limpiados.";
+    }
+
+    function obtenerUbicacion() {
+      if (!navigator.geolocation) {
+        estadoApp.textContent = "Este dispositivo no permite ubicación.";
+        return;
+      }
+
+      estadoApp.textContent = "Acepta el permiso de ubicación...";
+
+      navigator.geolocation.getCurrentPosition(
+        function(position) {
+          const lat = position.coords.latitude;
+          const lng = position.coords.longitude;
+          const linkMaps = `https://www.google.com/maps?q=${lat},${lng}`;
+          document.getElementById("direccion").value = linkMaps;
+          estadoApp.textContent = "Ubicación agregada correctamente.";
+        },
+        function(error) {
+          if (error.code === 1) {
+            estadoApp.textContent = "Permiso de ubicación denegado. Debes permitirlo en Chrome.";
+          } else {
+            estadoApp.textContent = "No se pudo obtener la ubicación.";
+          }
+        },
+        {
+          enableHighAccuracy: true,
+          timeout: 15000,
+          maximumAge: 0
+        }
+      );
+    }
 
     function obtenerPedidos() {
       return JSON.parse(localStorage.getItem("zonaContainerPedidos")) || [];
@@ -306,10 +421,9 @@
         item.innerHTML = `
           <h3>${pedido.nombreCliente}</h3>
           <p><strong>Teléfono:</strong> ${pedido.telefono}</p>
-          <p><strong>Forma de ingreso:</strong> ${pedido.formaIngreso}</p>
           <p><strong>Tipo de servicio:</strong> ${pedido.tipoServicio}</p>
           <p><strong>Ubicación:</strong> <a href="${pedido.direccion}" target="_blank" style="color:#ffcc00;">Ver ubicación</a></p>
-          <p><strong>Pedido:</strong> ${pedido.pedido}</p>
+          <p><strong>Pedido:</strong><br>${pedido.pedido.replace(/\n/g, "<br>")}</p>
           <p><strong>Notas:</strong> ${pedido.notas || "Sin notas"}</p>
           <small><strong>Fecha:</strong> ${pedido.fecha}</small>
           <div class="acciones">
@@ -332,41 +446,15 @@
     function limpiarFormulario() {
       pedidoForm.reset();
       document.getElementById("direccion").value = "";
+      pedidoSeleccionado = [];
+      renderPedidoSeleccionado();
       estadoApp.textContent = "Formulario limpio.";
-    }
-
-    function obtenerUbicacion() {
-      if (!navigator.geolocation) {
-        estadoApp.textContent = "Este dispositivo no permite obtener ubicación.";
-        return;
-      }
-
-      estadoApp.textContent = "Obteniendo ubicación actual...";
-
-      navigator.geolocation.getCurrentPosition(
-        function(position) {
-          const lat = position.coords.latitude;
-          const lng = position.coords.longitude;
-          const linkMaps = `https://www.google.com/maps?q=${lat},${lng}`;
-          document.getElementById("direccion").value = linkMaps;
-          estadoApp.textContent = "Ubicación actual agregada correctamente.";
-        },
-        function() {
-          estadoApp.textContent = "No se pudo obtener la ubicación. Revisa los permisos del navegador.";
-        },
-        {
-          enableHighAccuracy: true,
-          timeout: 10000,
-          maximumAge: 0
-        }
-      );
     }
 
     pedidoForm.addEventListener("submit", function(e) {
       e.preventDefault();
 
       const nuevoPedido = {
-        formaIngreso: document.getElementById("formaIngreso").value,
         tipoServicio: document.getElementById("tipoServicio").value,
         nombreCliente: document.getElementById("nombreCliente").value.trim(),
         telefono: document.getElementById("telefono").value.trim(),
@@ -376,8 +464,8 @@
         fecha: new Date().toLocaleString("es-CR")
       };
 
-      if (!nuevoPedido.nombreCliente || !nuevoPedido.telefono || !nuevoPedido.pedido || !nuevoPedido.direccion) {
-        estadoApp.textContent = "Completa nombre, teléfono, pedido y escoge la ubicación actual.";
+      if (!nuevoPedido.nombreCliente || !nuevoPedido.telefono || !nuevoPedido.direccion || !nuevoPedido.pedido) {
+        estadoApp.textContent = "Completa nombre, teléfono, ubicación y productos.";
         return;
       }
 
@@ -387,6 +475,8 @@
 
       pedidoForm.reset();
       document.getElementById("direccion").value = "";
+      pedidoSeleccionado = [];
+      renderPedidoSeleccionado();
       renderPedidos();
       estadoApp.textContent = "Pedido guardado correctamente.";
     });
