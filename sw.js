@@ -1,8 +1,10 @@
-const CACHE_NAME = "zona-container-v7";
+const CACHE_NAME = "zona-container-v8";
 const urlsToCache = [
   "./",
   "./index.html",
   "./admin.html",
+  "./firebase-config.js",
+  "./firebase-service.js",
   "./manifest.json",
   "./icono.png"
 ];
