@@ -20,14 +20,13 @@ import {
   onAuthStateChanged
 } from "https://www.gstatic.com/firebasejs/12.12.0/firebase-auth.js";
 
-// REEMPLAZA ESTO CON TU CONFIG REAL
 const firebaseConfig = {
-  apiKey: "TU_API_KEY",
-  authDomain: "TU_AUTH_DOMAIN",
-  projectId: "TU_PROJECT_ID",
-  storageBucket: "TU_STORAGE_BUCKET",
-  messagingSenderId: "TU_MESSAGING_SENDER_ID",
-  appId: "TU_APP_ID"
+  apiKey: "AIzaSyBK0o0-NzlyouzcpkqpXgoBmr-zeLoeIII",
+  authDomain: "zona-container-e79ab.firebaseapp.com",
+  projectId: "zona-container-e79ab",
+  storageBucket: "zona-container-e79ab.firebasestorage.app",
+  messagingSenderId: "710277803045",
+  appId: "1:710277803045:web:060be0331633950e5923cc"
 };
 
 const app = initializeApp(firebaseConfig);
