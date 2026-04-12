@@ -3,28 +3,12 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Zona Container - Administradora</title>
-
+  <title>Zona Container - Admin</title>
   <meta name="theme-color" content="#000000" />
-  <meta name="description" content="Panel administrador de Zona Container" />
-
   <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: Arial, sans-serif;
-    }
-
-    body {
-      background: #000;
-      color: #fff;
-      min-height: 100vh;
-    }
-
-    .hidden {
-      display: none !important;
-    }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: Arial, sans-serif; }
+    body { background: #000; color: #fff; min-height: 100vh; }
+    .hidden { display: none !important; }
 
     .login-wrap {
       min-height: 100vh;
@@ -34,7 +18,6 @@
       padding: 20px;
     }
 
-    .login-card,
     .card {
       background: #111;
       border: 2px solid #ffcc00;
@@ -43,22 +26,80 @@
       box-shadow: 0 0 18px rgba(255, 204, 0, 0.12);
     }
 
-    .login-card {
+    .login-card { width: 100%; max-width: 460px; }
+    .login-card h1, .card h2 { color: #ffcc00; margin-bottom: 12px; }
+    .login-card p, .muted { color: #bbb; line-height: 1.45; }
+
+    label {
+      display: block;
+      margin-top: 12px;
+      margin-bottom: 6px;
+      font-weight: bold;
+    }
+
+    input, select, textarea {
       width: 100%;
-      max-width: 460px;
+      padding: 12px;
+      border-radius: 12px;
+      border: 1px solid #333;
+      background: #1c1c1c;
+      color: #fff;
+      font-size: 1rem;
     }
 
-    .login-card h1,
-    .card h2,
-    .card h3 {
-      color: #ffcc00;
-      margin-bottom: 12px;
+    textarea {
+      min-height: 90px;
+      resize: vertical;
     }
 
-    .login-card p {
-      color: #ccc;
-      margin-bottom: 14px;
-      line-height: 1.4;
+    .btn, .mini-btn, .danger-btn, .tab-btn {
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .btn {
+      width: 100%;
+      padding: 12px;
+      margin-top: 12px;
+      background: #ffcc00;
+      color: #000;
+      font-size: 1rem;
+    }
+
+    .btn.secundario, .mini-btn.secundario {
+      background: #333;
+      color: #fff;
+    }
+
+    .mini-btn {
+      padding: 10px 12px;
+      background: #ffcc00;
+      color: #000;
+    }
+
+    .mini-btn.azul {
+      background: #2f7df6;
+      color: #fff;
+    }
+
+    .mini-btn.verde {
+      background: #1f8f4d;
+      color: #fff;
+    }
+
+    .danger-btn {
+      padding: 10px 12px;
+      background: #a32020;
+      color: #fff;
+    }
+
+    .estado {
+      margin-top: 12px;
+      color: #bbb;
+      line-height: 1.45;
+      font-size: 0.95rem;
     }
 
     .app-shell {
@@ -77,59 +118,33 @@
       overflow: auto;
     }
 
-    .brand {
-      margin-bottom: 18px;
-    }
-
-    .brand h2 {
-      color: #ffcc00;
-      margin-bottom: 6px;
-    }
-
-    .brand p {
-      color: #bbb;
-      line-height: 1.35;
-      font-size: 0.92rem;
-    }
+    .brand h2 { color: #ffcc00; margin-bottom: 6px; }
+    .brand p { color: #bbb; line-height: 1.35; font-size: 0.92rem; }
 
     .user-box {
       background: #151515;
       border: 1px solid #333;
       border-radius: 14px;
       padding: 12px;
-      margin-bottom: 18px;
+      margin: 16px 0;
     }
 
-    .user-box p {
-      color: #ddd;
-      line-height: 1.45;
-      font-size: 0.94rem;
-    }
+    .user-box p { color: #ddd; line-height: 1.45; font-size: 0.94rem; }
 
-    .nav {
+    .tabs {
       display: grid;
       gap: 8px;
     }
 
-    .nav button,
-    .btn,
-    .mini-btn,
-    .danger-btn {
-      border: none;
-      border-radius: 12px;
-      cursor: pointer;
-      font-weight: bold;
-    }
-
-    .nav button {
+    .tab-btn {
       width: 100%;
+      text-align: left;
       padding: 12px;
       background: #1c1c1c;
       color: #fff;
-      text-align: left;
     }
 
-    .nav button.active {
+    .tab-btn.active {
       background: #ffcc00;
       color: #000;
     }
@@ -140,9 +155,7 @@
       gap: 10px;
     }
 
-    .main {
-      padding: 18px;
-    }
+    .main { padding: 18px; }
 
     .topbar {
       display: flex;
@@ -153,34 +166,17 @@
       flex-wrap: wrap;
     }
 
-    .topbar h1 {
-      color: #ffcc00;
-      font-size: 1.8rem;
-    }
+    .topbar h1 { color: #ffcc00; font-size: 1.8rem; }
+    .topbar p { color: #bbb; line-height: 1.4; }
 
-    .topbar p {
-      color: #bbb;
-      line-height: 1.4;
-    }
-
-    .grid-2,
-    .grid-3,
-    .grid-4 {
+    .grid-2, .grid-3, .grid-4 {
       display: grid;
       gap: 16px;
     }
 
-    .grid-2 {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-
-    .grid-3 {
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-    }
-
-    .grid-4 {
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-    }
+    .grid-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .grid-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .grid-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
 
     .metric-card {
       background: #151515;
@@ -200,94 +196,15 @@
       font-size: 1.4rem;
     }
 
-    .card {
-      margin-bottom: 16px;
-    }
+    .card { margin-bottom: 16px; }
 
-    label {
-      display: block;
-      margin-top: 12px;
-      margin-bottom: 6px;
-      font-weight: bold;
-    }
-
-    input,
-    select,
-    textarea {
-      width: 100%;
-      padding: 12px;
-      border-radius: 12px;
+    .notice {
+      background: #161616;
       border: 1px solid #333;
-      background: #1c1c1c;
-      color: #fff;
-      font-size: 1rem;
-    }
-
-    textarea {
-      min-height: 90px;
-      resize: vertical;
-    }
-
-    .btn {
-      width: 100%;
+      border-radius: 14px;
       padding: 12px;
-      background: #ffcc00;
-      color: #000;
-      margin-top: 12px;
-      font-size: 1rem;
-    }
-
-    .btn.secundario {
-      background: #333;
-      color: #fff;
-    }
-
-    .danger-btn {
-      background: #a32020;
-      color: #fff;
-      padding: 10px 12px;
-    }
-
-    .mini-btn {
-      background: #ffcc00;
-      color: #000;
-      padding: 10px 12px;
-    }
-
-    .mini-btn.secundario {
-      background: #333;
-      color: #fff;
-    }
-
-    .mini-btn.azul {
-      background: #2f7df6;
-      color: #fff;
-    }
-
-    .mini-btn.verde {
-      background: #1f8f4d;
-      color: #fff;
-    }
-
-    .actions-row {
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-      margin-top: 12px;
-    }
-
-    .actions-row > * {
-      flex: 1 1 180px;
-    }
-
-    .status-pill {
-      display: inline-block;
-      padding: 6px 10px;
-      border-radius: 999px;
-      background: #2a2a2a;
-      color: #fff;
-      font-size: 0.86rem;
-      margin-top: 6px;
+      color: #ddd;
+      line-height: 1.45;
     }
 
     .list {
@@ -308,9 +225,7 @@
       margin-bottom: 8px;
     }
 
-    .item-card p,
-    .item-card li,
-    .item-card small {
+    .item-card p, .item-card small {
       color: #ddd;
       line-height: 1.45;
     }
@@ -321,8 +236,23 @@
       color: #aaa;
     }
 
-    .item-card ul {
-      padding-left: 18px;
+    .actions-row {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 12px;
+    }
+
+    .actions-row > * { flex: 1 1 180px; }
+
+    .status-pill {
+      display: inline-block;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: #2a2a2a;
+      color: #fff;
+      font-size: 0.86rem;
+      margin-top: 8px;
     }
 
     .table-wrap {
@@ -336,8 +266,7 @@
       min-width: 760px;
     }
 
-    th,
-    td {
+    th, td {
       border-bottom: 1px solid #333;
       padding: 10px;
       text-align: left;
@@ -350,64 +279,28 @@
       background: #151515;
     }
 
-    .muted {
-      color: #bbb;
-    }
-
-    .notice {
-      background: #161616;
-      border: 1px solid #333;
-      border-radius: 14px;
-      padding: 12px;
-      line-height: 1.45;
-      color: #ddd;
-    }
-
-    .section-title {
-      margin-bottom: 10px;
-      color: #ffcc00;
-    }
-
-    .login-hint {
-      margin-top: 10px;
-      font-size: 0.92rem;
-      color: #bbb;
-      line-height: 1.45;
-    }
-
     @media (max-width: 980px) {
-      .app-shell {
-        grid-template-columns: 1fr;
-      }
-
+      .app-shell { grid-template-columns: 1fr; }
       .sidebar {
         position: static;
         height: auto;
         border-right: none;
         border-bottom: 1px solid #333;
       }
-
-      .grid-2,
-      .grid-3,
-      .grid-4 {
-        grid-template-columns: 1fr;
-      }
-
-      table {
-        min-width: 620px;
-      }
+      .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
+      table { min-width: 620px; }
     }
   </style>
 </head>
 <body>
   <div id="loginView" class="login-wrap">
-    <div class="login-card">
+    <div class="card login-card">
       <h1>Zona Container Admin</h1>
-      <p>Ingresa con tu usuario para administrar pedidos, ventas, usuarios, caja y bitácora.</p>
+      <p>Ingresa con tu correo y contraseña de Firebase Authentication.</p>
 
       <form id="loginForm">
-        <label for="loginUsername">Usuario</label>
-        <input type="text" id="loginUsername" placeholder="Ej: admin" required />
+        <label for="loginEmail">Correo</label>
+        <input type="email" id="loginEmail" placeholder="correo@ejemplo.com" required />
 
         <label for="loginPassword">Contraseña</label>
         <input type="password" id="loginPassword" placeholder="Tu contraseña" required />
@@ -415,13 +308,7 @@
         <button type="submit" class="btn">Ingresar</button>
       </form>
 
-      <div class="login-hint">
-        Usuario inicial de prueba: <strong>admin</strong><br>
-        Contraseña inicial de prueba: <strong>1234</strong><br>
-        Cambia eso apenas entres.
-      </div>
-
-      <div id="loginStatus" class="estado"></div>
+      <div class="estado" id="loginStatus"></div>
     </div>
   </div>
 
@@ -429,22 +316,22 @@
     <aside class="sidebar">
       <div class="brand">
         <h2>Zona Container</h2>
-        <p>Panel administradora</p>
+        <p>Panel administradora conectado a Firebase</p>
       </div>
 
       <div class="user-box">
-        <p><strong>Usuario:</strong> <span id="sidebarUserName"></span></p>
-        <p><strong>Rol:</strong> <span id="sidebarUserRole"></span></p>
+        <p><strong>Correo:</strong> <span id="sidebarUserEmail"></span></p>
+        <p><strong>Nombre:</strong> <span id="sidebarUserName"></span></p>
         <p><strong>Entrada:</strong> <span id="sidebarClockIn"></span></p>
       </div>
 
-      <div class="nav" id="navTabs">
-        <button class="active" data-tab="dashboardTab">Dashboard</button>
-        <button data-tab="pedidosTab">Pedidos</button>
-        <button data-tab="reportesTab">Reportes</button>
-        <button data-tab="usuariosTab">Usuarios</button>
-        <button data-tab="cajaTab">Caja</button>
-        <button data-tab="bitacoraTab">Bitácora</button>
+      <div class="tabs" id="tabsNav">
+        <button class="tab-btn active" data-tab="dashboardTab">Dashboard</button>
+        <button class="tab-btn" data-tab="pedidosTab">Pedidos</button>
+        <button class="tab-btn" data-tab="reportesTab">Reportes</button>
+        <button class="tab-btn" data-tab="cajaTab">Caja</button>
+        <button class="tab-btn" data-tab="bitacoraTab">Bitácora</button>
+        <button class="tab-btn" data-tab="usuariosTab">Usuarios</button>
       </div>
 
       <div class="sidebar-actions">
@@ -457,7 +344,7 @@
       <div class="topbar">
         <div>
           <h1>Administración</h1>
-          <p>Control de pedidos, ventas, usuarios, tiempos, comandera y cierres.</p>
+          <p>Pedidos, ventas, caja y bitácora en tiempo real.</p>
         </div>
       </div>
 
@@ -476,8 +363,8 @@
             <strong id="metricScheduledOrders">0</strong>
           </div>
           <div class="metric-card">
-            <small>Usuarios activos</small>
-            <strong id="metricActiveSessions">0</strong>
+            <small>Ventas cerradas hoy</small>
+            <strong id="metricTodayClosed">0</strong>
           </div>
         </div>
 
@@ -486,14 +373,12 @@
             <h2>Resumen rápido</h2>
             <div class="notice" id="quickSummaryBox"></div>
           </div>
-
           <div class="card">
-            <h2>Ventas semanales</h2>
+            <h2>Resumen semanal</h2>
             <div class="notice" id="weeklySummaryBox"></div>
           </div>
-
           <div class="card">
-            <h2>Ventas mensuales</h2>
+            <h2>Resumen mensual</h2>
             <div class="notice" id="monthlySummaryBox"></div>
           </div>
         </div>
@@ -509,11 +394,11 @@
               <input type="text" id="orderCustomerName" required />
 
               <label for="orderPhone">Teléfono</label>
-              <input type="tel" id="orderPhone" placeholder="Ej: 8888-8888" required />
+              <input type="tel" id="orderPhone" placeholder="8888-8888" required />
 
               <label for="orderServiceType">Tipo de servicio</label>
               <select id="orderServiceType" required>
-                <option value="">Selecciona una opción</option>
+                <option value="">Selecciona</option>
                 <option value="Express">Express</option>
                 <option value="Recoger en local">Recoger en local</option>
                 <option value="Comer en local">Comer en local</option>
@@ -534,19 +419,19 @@
               </div>
 
               <label for="orderItems">Detalle del pedido</label>
-              <textarea id="orderItems" placeholder="Ej: 2 hamburguesas + papas, 1 nachos grande" required></textarea>
+              <textarea id="orderItems" required></textarea>
 
               <label for="orderSubtotal">Subtotal productos</label>
               <input type="number" id="orderSubtotal" min="0" step="1" value="0" required />
 
-              <label for="orderExpressAmount">Monto de express</label>
+              <label for="orderExpressAmount">Monto express</label>
               <input type="number" id="orderExpressAmount" min="0" step="1" value="0" />
 
               <label for="orderDiscount">Descuento</label>
               <input type="number" id="orderDiscount" min="0" step="1" value="0" />
 
               <label for="orderNotes">Notas</label>
-              <textarea id="orderNotes" placeholder="Observaciones del pedido"></textarea>
+              <textarea id="orderNotes"></textarea>
 
               <label for="orderTotalPreview">Total final</label>
               <input type="text" id="orderTotalPreview" readonly value="₡0" />
@@ -554,22 +439,22 @@
               <button type="submit" class="btn">Guardar pedido manual</button>
             </form>
 
-            <div id="manualOrderStatus" class="estado"></div>
+            <div class="estado" id="manualOrderStatus"></div>
           </div>
 
           <div class="card">
-            <h2>Ayuda rápida</h2>
+            <h2>Estado del panel</h2>
             <div class="notice">
-              Desde aquí puedes:
+              Esta versión ya usa Firebase para:
               <br><br>
-              • ingresar pedidos manuales del local o por llamada<br>
-              • revisar disponibilidad<br>
-              • asignar tiempo estimado<br>
-              • enviar a comandera<br>
-              • enviar mensajes por WhatsApp al cliente<br>
-              • aplicar descuentos<br>
-              • cerrar venta e imprimir ticket<br>
-              • eliminar pedidos con razón obligatoria
+              • leer pedidos en tiempo real<br>
+              • guardar pedidos manuales<br>
+              • actualizar estados<br>
+              • registrar ventas<br>
+              • guardar bitácora<br>
+              • guardar cierres de caja
+              <br><br>
+              La parte de roles/permisos y creación de usuarios desde la app la montamos en el siguiente paso.
             </div>
           </div>
         </div>
@@ -586,12 +471,10 @@
             <h2>Reporte diario</h2>
             <div id="dailyReportBox" class="notice"></div>
           </div>
-
           <div class="card">
             <h2>Reporte semanal</h2>
             <div id="weeklyReportBox" class="notice"></div>
           </div>
-
           <div class="card">
             <h2>Reporte mensual</h2>
             <div id="monthlyReportBox" class="notice"></div>
@@ -609,56 +492,12 @@
                   <th>Servicio</th>
                   <th>Pago</th>
                   <th>Total</th>
-                  <th>Usuario</th>
+                  <th>Cerró</th>
                 </tr>
               </thead>
               <tbody id="salesTableBody"></tbody>
             </table>
           </div>
-        </div>
-      </section>
-
-      <section id="usuariosTab" class="tab-section hidden">
-        <div class="grid-2">
-          <div class="card">
-            <h2>Crear usuario</h2>
-
-            <form id="createUserForm">
-              <label for="newUserName">Nombre completo</label>
-              <input type="text" id="newUserName" required />
-
-              <label for="newUserUsername">Usuario</label>
-              <input type="text" id="newUserUsername" required />
-
-              <label for="newUserPassword">Contraseña</label>
-              <input type="text" id="newUserPassword" required />
-
-              <label for="newUserRole">Rol</label>
-              <select id="newUserRole" required>
-                <option value="admin">Administrador</option>
-                <option value="operador">Ingreso y aceptación de pedidos</option>
-                <option value="cocina">Cocina / comandera</option>
-              </select>
-
-              <button type="submit" class="btn">Crear usuario</button>
-            </form>
-
-            <div id="createUserStatus" class="estado"></div>
-          </div>
-
-          <div class="card">
-            <h2>Permisos por rol</h2>
-            <div class="notice">
-              <strong>Administrador:</strong> todo el sistema.<br><br>
-              <strong>Operador:</strong> ingresar, aceptar, actualizar pedidos, mandar a comandera, descuentos, cierre de venta y ticket.<br><br>
-              <strong>Cocina:</strong> ver pedidos, cambiar estados de preparación y listo.
-            </div>
-          </div>
-        </div>
-
-        <div class="card">
-          <h2>Usuarios registrados</h2>
-          <div id="usersList" class="list"></div>
         </div>
       </section>
 
@@ -677,18 +516,18 @@
               <label for="cardActual">Tarjeta real</label>
               <input type="number" id="cardActual" min="0" step="1" value="0" required />
 
-              <label for="cashNotes">Observaciones del cierre</label>
-              <textarea id="cashNotes" placeholder="Notas del cierre de caja"></textarea>
+              <label for="cashNotes">Observaciones</label>
+              <textarea id="cashNotes"></textarea>
 
               <button type="submit" class="btn">Guardar cierre de caja</button>
             </form>
 
-            <div id="cashStatus" class="estado"></div>
+            <div class="estado" id="cashStatus"></div>
           </div>
 
           <div class="card">
-            <h2>Turno actual</h2>
-            <div id="currentShiftBox" class="notice"></div>
+            <h2>Resumen del turno</h2>
+            <div class="notice" id="currentShiftBox"></div>
           </div>
         </div>
 
@@ -700,48 +539,71 @@
 
       <section id="bitacoraTab" class="tab-section hidden">
         <div class="card">
-          <h2>Bitácora del sistema</h2>
+          <h2>Bitácora</h2>
           <div id="logsList" class="list"></div>
+        </div>
+      </section>
+
+      <section id="usuariosTab" class="tab-section hidden">
+        <div class="card">
+          <h2>Usuarios</h2>
+          <div class="notice">
+            En esta etapa, los usuarios se crean en:
+            <br><br>
+            <strong>Firebase → Authentication → Usuarios → Agregar usuario</strong>
+            <br><br>
+            En el siguiente paso te dejo la gestión de roles, permisos y perfiles desde Firestore.
+          </div>
         </div>
       </section>
     </main>
   </div>
 
-  <script>
-    const STORAGE_KEYS = {
-      users: "zc_admin_users_v1",
-      orders: "zc_admin_orders_v1",
-      sales: "zc_admin_sales_v1",
-      logs: "zc_admin_logs_v1",
-      sessions: "zc_admin_sessions_v1",
-      cashClosings: "zc_admin_cash_closings_v1",
-      currentUser: "zc_admin_current_user_v1"
-    };
+  <script type="module">
+    import {
+      auth,
+      db,
+      signInWithEmailAndPassword,
+      signOut,
+      onAuthStateChanged,
+      collection,
+      addDoc,
+      onSnapshot,
+      query,
+      orderBy,
+      doc,
+      updateDoc,
+      serverTimestamp
+    } from "./firebase-config.js";
 
     let currentUser = null;
+    let clockInISO = null;
+    let ordersData = [];
+    let salesData = [];
+    let logsData = [];
+    let cashClosingsData = [];
 
     const loginView = document.getElementById("loginView");
     const appView = document.getElementById("appView");
     const loginForm = document.getElementById("loginForm");
     const loginStatus = document.getElementById("loginStatus");
 
+    const sidebarUserEmail = document.getElementById("sidebarUserEmail");
     const sidebarUserName = document.getElementById("sidebarUserName");
-    const sidebarUserRole = document.getElementById("sidebarUserRole");
     const sidebarClockIn = document.getElementById("sidebarClockIn");
 
-    const navTabs = document.getElementById("navTabs");
+    const tabsNav = document.getElementById("tabsNav");
     const tabSections = document.querySelectorAll(".tab-section");
 
     const metricTodaySales = document.getElementById("metricTodaySales");
     const metricPendingOrders = document.getElementById("metricPendingOrders");
     const metricScheduledOrders = document.getElementById("metricScheduledOrders");
-    const metricActiveSessions = document.getElementById("metricActiveSessions");
+    const metricTodayClosed = document.getElementById("metricTodayClosed");
 
     const quickSummaryBox = document.getElementById("quickSummaryBox");
     const weeklySummaryBox = document.getElementById("weeklySummaryBox");
     const monthlySummaryBox = document.getElementById("monthlySummaryBox");
 
-    const orderServiceType = document.getElementById("orderServiceType");
     const orderMomentType = document.getElementById("orderMomentType");
     const programmedOrderBlock = document.getElementById("programmedOrderBlock");
     const orderSubtotal = document.getElementById("orderSubtotal");
@@ -751,10 +613,6 @@
     const manualOrderForm = document.getElementById("manualOrderForm");
     const manualOrderStatus = document.getElementById("manualOrderStatus");
     const ordersList = document.getElementById("ordersList");
-
-    const createUserForm = document.getElementById("createUserForm");
-    const createUserStatus = document.getElementById("createUserStatus");
-    const usersList = document.getElementById("usersList");
 
     const salesTableBody = document.getElementById("salesTableBody");
     const dailyReportBox = document.getElementById("dailyReportBox");
@@ -767,48 +625,11 @@
     const cashClosingsList = document.getElementById("cashClosingsList");
 
     const logsList = document.getElementById("logsList");
-
     const clockOutBtn = document.getElementById("clockOutBtn");
     const logoutBtn = document.getElementById("logoutBtn");
 
-    function loadData(key, fallback) {
-      const raw = localStorage.getItem(key);
-      if (!raw) return fallback;
-      try {
-        return JSON.parse(raw);
-      } catch {
-        return fallback;
-      }
-    }
-
-    function saveData(key, value) {
-      localStorage.setItem(key, JSON.stringify(value));
-    }
-
-    function uid(prefix = "id") {
-      return `${prefix}_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`;
-    }
-
-    function nowISO() {
-      return new Date().toISOString();
-    }
-
-    function formatDateTime(value) {
-      if (!value) return "—";
-      return new Date(value).toLocaleString("es-CR");
-    }
-
-    function formatDateOnly(value) {
-      if (!value) return "—";
-      return new Date(value).toLocaleDateString("es-CR");
-    }
-
-    function formatCurrency(value) {
-      return `₡${Number(value || 0).toLocaleString("es-CR")}`;
-    }
-
-    function escapeHtml(text) {
-      return String(text)
+    function safe(text) {
+      return String(text ?? "")
         .replace(/&/g, "&amp;")
         .replace(/</g, "&lt;")
         .replace(/>/g, "&gt;")
@@ -816,154 +637,64 @@
         .replace(/'/g, "&#039;");
     }
 
-    function getUsers() {
-      return loadData(STORAGE_KEYS.users, []);
+    function money(value) {
+      return `₡${Number(value || 0).toLocaleString("es-CR")}`;
     }
 
-    function saveUsers(users) {
-      saveData(STORAGE_KEYS.users, users);
+    function timestampToDate(value) {
+      if (!value) return null;
+      if (value.seconds) return new Date(value.seconds * 1000);
+      if (typeof value === "string") return new Date(value);
+      if (value.toDate) return value.toDate();
+      return null;
     }
 
-    function getOrders() {
-      return loadData(STORAGE_KEYS.orders, []);
+    function formatDateTime(value) {
+      const d = timestampToDate(value);
+      return d ? d.toLocaleString("es-CR") : "—";
     }
 
-    function saveOrders(orders) {
-      saveData(STORAGE_KEYS.orders, orders);
+    function nowLocalISO() {
+      return new Date().toISOString();
     }
 
-    function getSales() {
-      return loadData(STORAGE_KEYS.sales, []);
+    function todayBounds() {
+      const now = new Date();
+      const start = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+      const end = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1);
+      return { start, end };
     }
 
-    function saveSales(sales) {
-      saveData(STORAGE_KEYS.sales, sales);
+    function weekBounds() {
+      const now = new Date();
+      const day = now.getDay();
+      const diff = day === 0 ? -6 : 1 - day;
+      const start = new Date(now.getFullYear(), now.getMonth(), now.getDate() + diff);
+      const end = new Date(start.getFullYear(), start.getMonth(), start.getDate() + 7);
+      return { start, end };
     }
 
-    function getLogs() {
-      return loadData(STORAGE_KEYS.logs, []);
+    function monthBounds() {
+      const now = new Date();
+      const start = new Date(now.getFullYear(), now.getMonth(), 1);
+      const end = new Date(now.getFullYear(), now.getMonth() + 1, 1);
+      return { start, end };
     }
 
-    function saveLogs(logs) {
-      saveData(STORAGE_KEYS.logs, logs);
+    function inRange(value, start, end) {
+      const d = timestampToDate(value);
+      if (!d) return false;
+      return d >= start && d < end;
     }
 
-    function getSessions() {
-      return loadData(STORAGE_KEYS.sessions, []);
-    }
-
-    function saveSessions(sessions) {
-      saveData(STORAGE_KEYS.sessions, sessions);
-    }
-
-    function getCashClosings() {
-      return loadData(STORAGE_KEYS.cashClosings, []);
-    }
-
-    function saveCashClosings(closings) {
-      saveData(STORAGE_KEYS.cashClosings, closings);
-    }
-
-    function seedInitialAdmin() {
-      const users = getUsers();
-      if (users.length > 0) return;
-
-      const adminUser = {
-        id: uid("user"),
-        name: "Administrador General",
-        username: "admin",
-        password: "1234",
-        role: "admin",
-        active: true,
-        createdAt: nowISO()
-      };
-
-      saveUsers([adminUser]);
-    }
-
-    function roleLabel(role) {
-      if (role === "admin") return "Administrador";
-      if (role === "operador") return "Ingreso y aceptación";
-      if (role === "cocina") return "Cocina / comandera";
-      return role;
-    }
-
-    function hasRole(...roles) {
-      return currentUser && roles.includes(currentUser.role);
-    }
-
-    function logAction(action, detail, extra = {}) {
-      const logs = getLogs();
-      logs.unshift({
-        id: uid("log"),
-        action,
-        detail,
-        userId: currentUser ? currentUser.id : null,
-        userName: currentUser ? currentUser.name : "Sistema",
-        createdAt: nowISO(),
-        ...extra
+    function setActiveTab(tabId) {
+      document.querySelectorAll(".tab-btn").forEach(btn => {
+        btn.classList.toggle("active", btn.dataset.tab === tabId);
       });
-      saveLogs(logs);
-    }
 
-    function getActiveSessionForUser(userId) {
-      return getSessions().find(session => session.userId === userId && !session.clockOut);
-    }
-
-    function registerClockIn(user) {
-      let sessions = getSessions();
-      const existing = sessions.find(session => session.userId === user.id && !session.clockOut);
-      if (existing) return existing;
-
-      const session = {
-        id: uid("session"),
-        userId: user.id,
-        userName: user.name,
-        role: user.role,
-        clockIn: nowISO(),
-        clockOut: null
-      };
-
-      sessions.unshift(session);
-      saveSessions(sessions);
-      logAction("Entrada de turno", `${user.name} abrió la app`, { sessionId: session.id });
-      return session;
-    }
-
-    function registerClockOut() {
-      if (!currentUser) return;
-
-      let sessions = getSessions();
-      const session = sessions.find(item => item.userId === currentUser.id && !item.clockOut);
-
-      if (!session) {
-        alert("No hay una entrada activa para cerrar.");
-        return;
-      }
-
-      session.clockOut = nowISO();
-      saveSessions(sessions);
-      logAction("Salida de turno", `${currentUser.name} marcó salida`, { sessionId: session.id });
-      renderAll();
-      alert("Salida registrada correctamente.");
-    }
-
-    function persistCurrentUser(user) {
-      localStorage.setItem(STORAGE_KEYS.currentUser, JSON.stringify(user));
-    }
-
-    function clearCurrentUser() {
-      localStorage.removeItem(STORAGE_KEYS.currentUser);
-    }
-
-    function loadCurrentUser() {
-      const raw = localStorage.getItem(STORAGE_KEYS.currentUser);
-      if (!raw) return null;
-      try {
-        return JSON.parse(raw);
-      } catch {
-        return null;
-      }
+      tabSections.forEach(section => {
+        section.classList.toggle("hidden", section.id !== tabId);
+      });
     }
 
     function showLogin() {
@@ -976,29 +707,24 @@
       appView.classList.remove("hidden");
     }
 
-    function setActiveTab(tabId) {
-      document.querySelectorAll("#navTabs button").forEach(btn => {
-        btn.classList.toggle("active", btn.dataset.tab === tabId);
-      });
+    function currentDisplayName() {
+      if (!currentUser) return "—";
+      return currentUser.displayName || currentUser.email || "Administrador";
+    }
 
-      tabSections.forEach(section => {
-        section.classList.toggle("hidden", section.id !== tabId);
+    async function createLog(action, detail, extra = {}) {
+      await addDoc(collection(db, "logs"), {
+        action,
+        detail,
+        userEmail: currentUser?.email || "",
+        userName: currentDisplayName(),
+        createdAt: serverTimestamp(),
+        ...extra
       });
     }
 
-    function applyPermissionsUI() {
-      const usersBtn = navTabs.querySelector('[data-tab="usuariosTab"]');
-      const cajaBtn = navTabs.querySelector('[data-tab="cajaTab"]');
-
-      if (usersBtn) usersBtn.classList.toggle("hidden", !hasRole("admin"));
-      if (cajaBtn) cajaBtn.classList.toggle("hidden", !hasRole("admin", "operador"));
-
-      if (!hasRole("admin")) {
-        document.getElementById("usuariosTab").classList.add("hidden");
-      }
-      if (!hasRole("admin", "operador")) {
-        document.getElementById("cajaTab").classList.add("hidden");
-      }
+    function updateProgrammedOrderBlock() {
+      programmedOrderBlock.classList.toggle("hidden", orderMomentType.value !== "Programado");
     }
 
     function calculateManualOrderTotal() {
@@ -1006,124 +732,80 @@
       const express = Number(orderExpressAmount.value || 0);
       const discount = Number(orderDiscount.value || 0);
       const total = Math.max(0, subtotal + express - discount);
-      orderTotalPreview.value = formatCurrency(total);
+      orderTotalPreview.value = money(total);
       return total;
     }
 
-    function updateProgrammedOrderBlock() {
-      programmedOrderBlock.classList.toggle("hidden", orderMomentType.value !== "Programado");
-    }
-
-    function todayRange() {
-      const now = new Date();
-      const start = new Date(now.getFullYear(), now.getMonth(), now.getDate()).getTime();
-      const end = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1).getTime();
-      return { start, end };
-    }
-
-    function weekRange() {
-      const now = new Date();
-      const day = now.getDay();
-      const diff = day === 0 ? -6 : 1 - day;
-      const startDate = new Date(now.getFullYear(), now.getMonth(), now.getDate() + diff);
-      const endDate = new Date(startDate.getFullYear(), startDate.getMonth(), startDate.getDate() + 7);
-      return { start: startDate.getTime(), end: endDate.getTime() };
-    }
-
-    function monthRange() {
-      const now = new Date();
-      const startDate = new Date(now.getFullYear(), now.getMonth(), 1);
-      const endDate = new Date(now.getFullYear(), now.getMonth() + 1, 1);
-      return { start: startDate.getTime(), end: endDate.getTime() };
-    }
-
-    function sumSalesByRange(range) {
-      return getSales()
-        .filter(sale => {
-          const t = new Date(sale.closedAt).getTime();
-          return t >= range.start && t < range.end;
-        })
-        .reduce((acc, sale) => acc + Number(sale.total || 0), 0);
-    }
-
-    function countSalesByRange(range) {
-      return getSales().filter(sale => {
-        const t = new Date(sale.closedAt).getTime();
-        return t >= range.start && t < range.end;
-      }).length;
-    }
-
-    function getExpectedByPaymentToday() {
-      const { start, end } = todayRange();
-      const sales = getSales().filter(sale => {
-        const t = new Date(sale.closedAt).getTime();
-        return t >= start && t < end;
-      });
-
-      const totals = { efectivo: 0, sinpe: 0, tarjeta: 0, otro: 0 };
-
-      sales.forEach(sale => {
-        const method = (sale.paymentMethod || "").toLowerCase();
-        if (method === "efectivo") totals.efectivo += Number(sale.total || 0);
-        else if (method === "sinpe") totals.sinpe += Number(sale.total || 0);
-        else if (method === "tarjeta") totals.tarjeta += Number(sale.total || 0);
-        else totals.otro += Number(sale.total || 0);
-      });
-
-      return totals;
-    }
-
     function renderDashboard() {
-      const todaySales = sumSalesByRange(todayRange());
-      const orders = getOrders().filter(order => !order.deleted);
-      const pendingOrders = orders.filter(order => !["Entregado", "Cancelado"].includes(order.status)).length;
-      const scheduledOrders = orders.filter(order => order.momentType === "Programado" && !order.deleted).length;
-      const activeSessions = getSessions().filter(session => !session.clockOut).length;
+      const { start: dayStart, end: dayEnd } = todayBounds();
+      const { start: weekStart, end: weekEnd } = weekBounds();
+      const { start: monthStart, end: monthEnd } = monthBounds();
 
-      metricTodaySales.textContent = formatCurrency(todaySales);
+      const todaySales = salesData
+        .filter(sale => inRange(sale.closedAt, dayStart, dayEnd))
+        .reduce((acc, sale) => acc + Number(sale.total || 0), 0);
+
+      const weekSales = salesData
+        .filter(sale => inRange(sale.closedAt, weekStart, weekEnd))
+        .reduce((acc, sale) => acc + Number(sale.total || 0), 0);
+
+      const monthSales = salesData
+        .filter(sale => inRange(sale.closedAt, monthStart, monthEnd))
+        .reduce((acc, sale) => acc + Number(sale.total || 0), 0);
+
+      const todayClosedCount = salesData.filter(sale => inRange(sale.closedAt, dayStart, dayEnd)).length;
+      const pendingOrders = ordersData.filter(order => !order.deleted && !["Entregado", "Cancelado"].includes(order.status || "Nuevo")).length;
+      const scheduledOrders = ordersData.filter(order => !order.deleted && order.momentType === "Programado").length;
+
+      metricTodaySales.textContent = money(todaySales);
       metricPendingOrders.textContent = String(pendingOrders);
       metricScheduledOrders.textContent = String(scheduledOrders);
-      metricActiveSessions.textContent = String(activeSessions);
+      metricTodayClosed.textContent = String(todayClosedCount);
 
       quickSummaryBox.innerHTML = `
-        Ventas de hoy: <strong>${formatCurrency(todaySales)}</strong><br>
+        Ventas de hoy: <strong>${money(todaySales)}</strong><br>
         Pedidos pendientes: <strong>${pendingOrders}</strong><br>
         Pedidos programados: <strong>${scheduledOrders}</strong><br>
-        Usuarios activos: <strong>${activeSessions}</strong>
+        Ventas cerradas hoy: <strong>${todayClosedCount}</strong>
       `;
 
       weeklySummaryBox.innerHTML = `
-        Total semanal: <strong>${formatCurrency(sumSalesByRange(weekRange()))}</strong><br>
-        Ventas cerradas: <strong>${countSalesByRange(weekRange())}</strong>
+        Total semanal: <strong>${money(weekSales)}</strong><br>
+        Ventas cerradas: <strong>${salesData.filter(sale => inRange(sale.closedAt, weekStart, weekEnd)).length}</strong>
       `;
 
       monthlySummaryBox.innerHTML = `
-        Total mensual: <strong>${formatCurrency(sumSalesByRange(monthRange()))}</strong><br>
-        Ventas cerradas: <strong>${countSalesByRange(monthRange())}</strong>
+        Total mensual: <strong>${money(monthSales)}</strong><br>
+        Ventas cerradas: <strong>${salesData.filter(sale => inRange(sale.closedAt, monthStart, monthEnd)).length}</strong>
       `;
     }
 
     function renderOrders() {
-      const orders = getOrders()
+      const activeOrders = ordersData
         .filter(order => !order.deleted)
-        .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+        .sort((a, b) => {
+          const da = timestampToDate(a.createdAt)?.getTime() || 0;
+          const dbt = timestampToDate(b.createdAt)?.getTime() || 0;
+          return dbt - da;
+        });
 
-      if (orders.length === 0) {
+      if (activeOrders.length === 0) {
         ordersList.innerHTML = '<div class="notice">No hay pedidos activos.</div>';
         return;
       }
 
-      ordersList.innerHTML = orders.map(order => {
-        const total = Number(order.subtotal || 0) + Number(order.expressAmount || 0) - Number(order.discount || 0);
+      ordersList.innerHTML = activeOrders.map(order => {
+        const total = Number(order.totalClosed ?? (Number(order.subtotal || 0) + Number(order.expressAmount || 0) - Number(order.discount || 0)));
         const momentText = order.momentType === "Programado"
-          ? `Programado para ${escapeHtml(order.scheduledDate || "—")} a las ${escapeHtml(order.scheduledTime || "—")}`
+          ? `Programado para ${safe(order.scheduledDate || "—")} a las ${safe(order.scheduledTime || "—")}`
           : "Lo quiere ahora";
 
-        const readyLabel = order.serviceType === "Express"
-          ? "Avisar en camino"
-          : order.serviceType === "Recoger en local"
-            ? "Avisar listo para retiro"
-            : "Marcar listo";
+        const readyLabel =
+          order.serviceType === "Express"
+            ? "Avisar en camino"
+            : order.serviceType === "Recoger en local"
+              ? "Avisar listo para retiro"
+              : "Marcar listo";
 
         const statusOptions = [
           "Nuevo",
@@ -1142,19 +824,18 @@
 
         return `
           <div class="item-card">
-            <h4>${escapeHtml(order.customerName)}</h4>
-            <p><strong>Teléfono:</strong> ${escapeHtml(order.phone)}</p>
-            <p><strong>Servicio:</strong> ${escapeHtml(order.serviceType)}</p>
+            <h4>${safe(order.customerName)}</h4>
+            <p><strong>Teléfono:</strong> ${safe(order.phone)}</p>
+            <p><strong>Servicio:</strong> ${safe(order.serviceType)}</p>
             <p><strong>Momento:</strong> ${momentText}</p>
-            <p><strong>Pedido:</strong><br>${escapeHtml(order.items).replace(/\n/g, "<br>")}</p>
-            <p><strong>Subtotal:</strong> ${formatCurrency(order.subtotal)}</p>
-            <p><strong>Express:</strong> ${formatCurrency(order.expressAmount)}</p>
-            <p><strong>Descuento:</strong> ${formatCurrency(order.discount)}</p>
-            <p><strong>Total:</strong> ${formatCurrency(total)}</p>
-            <p><strong>Notas:</strong> ${order.notes ? escapeHtml(order.notes) : "Sin notas"}</p>
-            <p><strong>Creado por:</strong> ${escapeHtml(order.createdByName || "Sistema")}</p>
+            <p><strong>Pedido:</strong><br>${safe(order.items).replace(/\n/g, "<br>")}</p>
+            <p><strong>Subtotal:</strong> ${money(order.subtotal)}</p>
+            <p><strong>Express:</strong> ${money(order.expressAmount)}</p>
+            <p><strong>Descuento:</strong> ${money(order.discount)}</p>
+            <p><strong>Total:</strong> ${money(total)}</p>
+            <p><strong>Notas:</strong> ${order.notes ? safe(order.notes) : "Sin notas"}</p>
             <small><strong>Fecha:</strong> ${formatDateTime(order.createdAt)}</small>
-            <span class="status-pill">${escapeHtml(order.status)}</span>
+            <span class="status-pill">${safe(order.status || "Nuevo")}</span>
 
             <div class="grid-2" style="margin-top:12px;">
               <div>
@@ -1165,7 +846,7 @@
               </div>
               <div>
                 <label>Tiempo estimado</label>
-                <input type="text" id="eta_${order.id}" placeholder="Ej: 25 min" value="${escapeHtml(order.estimatedTime || "")}">
+                <input type="text" id="eta_${order.id}" placeholder="Ej: 25 min" value="${safe(order.estimatedTime || "")}">
               </div>
             </div>
 
@@ -1202,234 +883,176 @@
       }).join("");
     }
 
-    function renderUsers() {
-      const users = getUsers().sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
-
-      if (users.length === 0) {
-        usersList.innerHTML = '<div class="notice">No hay usuarios.</div>';
-        return;
-      }
-
-      usersList.innerHTML = users.map(user => `
-        <div class="item-card">
-          <h4>${escapeHtml(user.name)}</h4>
-          <p><strong>Usuario:</strong> ${escapeHtml(user.username)}</p>
-          <p><strong>Rol:</strong> ${roleLabel(user.role)}</p>
-          <p><strong>Estado:</strong> ${user.active ? "Activo" : "Inactivo"}</p>
-          <small><strong>Creado:</strong> ${formatDateTime(user.createdAt)}</small>
-
-          <div class="actions-row">
-            <button class="mini-btn secundario" onclick="editUser('${user.id}')">Editar</button>
-            <button class="mini-btn" onclick="toggleUserActive('${user.id}')">${user.active ? "Inactivar" : "Activar"}</button>
-          </div>
-        </div>
-      `).join("");
-    }
-
     function renderSales() {
-      const sales = getSales().sort((a, b) => new Date(b.closedAt) - new Date(a.closedAt));
+      const rows = [...salesData].sort((a, b) => {
+        const da = timestampToDate(a.closedAt)?.getTime() || 0;
+        const dbt = timestampToDate(b.closedAt)?.getTime() || 0;
+        return dbt - da;
+      });
 
-      if (sales.length === 0) {
-        salesTableBody.innerHTML = `
-          <tr>
-            <td colspan="6">No hay ventas cerradas.</td>
-          </tr>
-        `;
+      if (rows.length === 0) {
+        salesTableBody.innerHTML = `<tr><td colspan="6">No hay ventas cerradas.</td></tr>`;
         return;
       }
 
-      salesTableBody.innerHTML = sales.map(sale => `
+      salesTableBody.innerHTML = rows.map(sale => `
         <tr>
           <td>${formatDateTime(sale.closedAt)}</td>
-          <td>${escapeHtml(sale.customerName)}</td>
-          <td>${escapeHtml(sale.serviceType)}</td>
-          <td>${escapeHtml(sale.paymentMethod || "—")}</td>
-          <td>${formatCurrency(sale.total)}</td>
-          <td>${escapeHtml(sale.closedByName || "—")}</td>
+          <td>${safe(sale.customerName)}</td>
+          <td>${safe(sale.serviceType)}</td>
+          <td>${safe(sale.paymentMethod || "—")}</td>
+          <td>${money(sale.total)}</td>
+          <td>${safe(sale.closedByName || "—")}</td>
         </tr>
       `).join("");
     }
 
     function renderReports() {
-      const dayRange = todayRange();
-      const week = weekRange();
-      const month = monthRange();
+      const { start: dayStart, end: dayEnd } = todayBounds();
+      const { start: weekStart, end: weekEnd } = weekBounds();
+      const { start: monthStart, end: monthEnd } = monthBounds();
 
-      const dailyCount = countSalesByRange(dayRange);
-      const weeklyCount = countSalesByRange(week);
-      const monthlyCount = countSalesByRange(month);
+      const dailySales = salesData.filter(sale => inRange(sale.closedAt, dayStart, dayEnd));
+      const weeklySales = salesData.filter(sale => inRange(sale.closedAt, weekStart, weekEnd));
+      const monthlySales = salesData.filter(sale => inRange(sale.closedAt, monthStart, monthEnd));
 
       dailyReportBox.innerHTML = `
-        Total vendido: <strong>${formatCurrency(sumSalesByRange(dayRange))}</strong><br>
-        Ventas cerradas: <strong>${dailyCount}</strong>
+        Total vendido: <strong>${money(dailySales.reduce((a, s) => a + Number(s.total || 0), 0))}</strong><br>
+        Ventas cerradas: <strong>${dailySales.length}</strong>
       `;
 
       weeklyReportBox.innerHTML = `
-        Total vendido: <strong>${formatCurrency(sumSalesByRange(week))}</strong><br>
-        Ventas cerradas: <strong>${weeklyCount}</strong>
+        Total vendido: <strong>${money(weeklySales.reduce((a, s) => a + Number(s.total || 0), 0))}</strong><br>
+        Ventas cerradas: <strong>${weeklySales.length}</strong>
       `;
 
       monthlyReportBox.innerHTML = `
-        Total vendido: <strong>${formatCurrency(sumSalesByRange(month))}</strong><br>
-        Ventas cerradas: <strong>${monthlyCount}</strong>
+        Total vendido: <strong>${money(monthlySales.reduce((a, s) => a + Number(s.total || 0), 0))}</strong><br>
+        Ventas cerradas: <strong>${monthlySales.length}</strong>
       `;
-    }
-
-    function renderCurrentShift() {
-      if (!currentUser) {
-        currentShiftBox.innerHTML = "No hay usuario activo.";
-        return;
-      }
-
-      const session = getActiveSessionForUser(currentUser.id);
-
-      if (!session) {
-        currentShiftBox.innerHTML = "No hay turno abierto.";
-        return;
-      }
-
-      currentShiftBox.innerHTML = `
-        Usuario: <strong>${escapeHtml(session.userName)}</strong><br>
-        Rol: <strong>${roleLabel(session.role)}</strong><br>
-        Entrada: <strong>${formatDateTime(session.clockIn)}</strong><br>
-        Salida: <strong>Pendiente</strong>
-      `;
-
-      sidebarUserName.textContent = currentUser.name;
-      sidebarUserRole.textContent = roleLabel(currentUser.role);
-      sidebarClockIn.textContent = formatDateTime(session.clockIn);
     }
 
     function renderCashClosings() {
-      const closings = getCashClosings().sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+      const rows = [...cashClosingsData].sort((a, b) => {
+        const da = timestampToDate(a.createdAt)?.getTime() || 0;
+        const dbt = timestampToDate(b.createdAt)?.getTime() || 0;
+        return dbt - da;
+      });
 
-      if (closings.length === 0) {
+      if (rows.length === 0) {
         cashClosingsList.innerHTML = '<div class="notice">No hay cierres registrados.</div>';
         return;
       }
 
-      cashClosingsList.innerHTML = closings.map(closing => `
+      cashClosingsList.innerHTML = rows.map(item => `
         <div class="item-card">
           <h4>Cierre de caja</h4>
-          <p><strong>Usuario:</strong> ${escapeHtml(closing.createdByName)}</p>
-          <p><strong>Fecha:</strong> ${formatDateTime(closing.createdAt)}</p>
-          <p><strong>Esperado efectivo:</strong> ${formatCurrency(closing.expected.efectivo)}</p>
-          <p><strong>Esperado SINPE:</strong> ${formatCurrency(closing.expected.sinpe)}</p>
-          <p><strong>Esperado tarjeta:</strong> ${formatCurrency(closing.expected.tarjeta)}</p>
-          <p><strong>Real efectivo:</strong> ${formatCurrency(closing.actual.efectivo)}</p>
-          <p><strong>Real SINPE:</strong> ${formatCurrency(closing.actual.sinpe)}</p>
-          <p><strong>Real tarjeta:</strong> ${formatCurrency(closing.actual.tarjeta)}</p>
-          <p><strong>Observaciones:</strong> ${closing.notes ? escapeHtml(closing.notes) : "Sin observaciones"}</p>
+          <p><strong>Usuario:</strong> ${safe(item.createdByName || "—")}</p>
+          <p><strong>Fecha:</strong> ${formatDateTime(item.createdAt)}</p>
+          <p><strong>Esperado efectivo:</strong> ${money(item.expected?.efectivo || 0)}</p>
+          <p><strong>Esperado SINPE:</strong> ${money(item.expected?.sinpe || 0)}</p>
+          <p><strong>Esperado tarjeta:</strong> ${money(item.expected?.tarjeta || 0)}</p>
+          <p><strong>Real efectivo:</strong> ${money(item.actual?.efectivo || 0)}</p>
+          <p><strong>Real SINPE:</strong> ${money(item.actual?.sinpe || 0)}</p>
+          <p><strong>Real tarjeta:</strong> ${money(item.actual?.tarjeta || 0)}</p>
+          <p><strong>Observaciones:</strong> ${item.notes ? safe(item.notes) : "Sin observaciones"}</p>
         </div>
       `).join("");
     }
 
     function renderLogs() {
-      const logs = getLogs();
+      const rows = [...logsData].sort((a, b) => {
+        const da = timestampToDate(a.createdAt)?.getTime() || 0;
+        const dbt = timestampToDate(b.createdAt)?.getTime() || 0;
+        return dbt - da;
+      });
 
-      if (logs.length === 0) {
+      if (rows.length === 0) {
         logsList.innerHTML = '<div class="notice">No hay registros en la bitácora.</div>';
         return;
       }
 
-      logsList.innerHTML = logs.map(log => `
+      logsList.innerHTML = rows.map(log => `
         <div class="item-card">
-          <h4>${escapeHtml(log.action)}</h4>
-          <p>${escapeHtml(log.detail)}</p>
-          ${log.reason ? `<p><strong>Razón:</strong> ${escapeHtml(log.reason)}</p>` : ""}
-          <small><strong>Usuario:</strong> ${escapeHtml(log.userName || "Sistema")} — <strong>Fecha:</strong> ${formatDateTime(log.createdAt)}</small>
+          <h4>${safe(log.action || "Acción")}</h4>
+          <p>${safe(log.detail || "")}</p>
+          ${log.reason ? `<p><strong>Razón:</strong> ${safe(log.reason)}</p>` : ""}
+          <small><strong>Usuario:</strong> ${safe(log.userName || log.userEmail || "Sistema")} — <strong>Fecha:</strong> ${formatDateTime(log.createdAt)}</small>
         </div>
       `).join("");
+    }
+
+    function renderShiftBox() {
+      currentShiftBox.innerHTML = `
+        Usuario actual: <strong>${safe(currentDisplayName())}</strong><br>
+        Correo: <strong>${safe(currentUser?.email || "—")}</strong><br>
+        Entrada: <strong>${clockInISO ? formatDateTime(clockInISO) : "—"}</strong><br>
+        Salida: <strong>Pendiente</strong>
+      `;
     }
 
     function renderAll() {
       renderDashboard();
       renderOrders();
-      renderUsers();
       renderSales();
       renderReports();
-      renderCurrentShift();
       renderCashClosings();
       renderLogs();
-      applyPermissionsUI();
+      renderShiftBox();
     }
 
-    function login(username, password) {
-      const users = getUsers();
-      const user = users.find(u => u.username === username && u.password === password && u.active);
-
-      if (!user) {
-        loginStatus.textContent = "Usuario o contraseña incorrectos.";
-        return;
-      }
-
-      currentUser = user;
-      persistCurrentUser(user);
-      registerClockIn(user);
-      showApp();
-      setActiveTab("dashboardTab");
-      renderAll();
+    async function logAction(action, detail, extra = {}) {
+      await createLog(action, detail, extra);
     }
 
-    function logout() {
-      clearCurrentUser();
-      currentUser = null;
-      showLogin();
-      loginForm.reset();
-      loginStatus.textContent = "";
-    }
-
-    function createManualOrder(orderData) {
-      const orders = getOrders();
-      orders.unshift(orderData);
-      saveOrders(orders);
-    }
-
-    function updateOrderStatus(orderId) {
-      const orders = getOrders();
-      const order = orders.find(item => item.id === orderId);
-      if (!order) return;
-
-      const statusSelect = document.getElementById(`status_${orderId}`);
-      const etaInput = document.getElementById(`eta_${orderId}`);
-
-      order.status = statusSelect.value;
-      order.estimatedTime = etaInput.value.trim();
-
-      saveOrders(orders);
-      logAction("Actualizar estado", `Se actualizó el pedido de ${order.customerName} a ${order.status}`);
-      renderAll();
-      alert("Estado actualizado.");
+    function normalizePhone(phone) {
+      const digits = String(phone || "").replace(/[^\d]/g, "");
+      if (!digits) return "";
+      if (digits.startsWith("506")) return digits;
+      if (digits.length === 8) return `506${digits}`;
+      return digits;
     }
 
     function sendWhatsApp(phone, message) {
-      const cleaned = String(phone || "").replace(/[^\d]/g, "");
-      if (!cleaned) {
+      const finalPhone = normalizePhone(phone);
+      if (!finalPhone) {
         alert("El pedido no tiene teléfono válido.");
         return;
       }
-
-      const url = `https://wa.me/506${cleaned.length === 8 ? cleaned : cleaned.replace(/^506/, "")}?text=${encodeURIComponent(message)}`;
-      window.open(url, "_blank");
+      window.open(`https://wa.me/${finalPhone}?text=${encodeURIComponent(message)}`, "_blank");
     }
 
-    function sendToKitchen(orderId) {
-      const orders = getOrders();
-      const order = orders.find(item => item.id === orderId);
+    async function updateOrderStatus(orderId) {
+      const status = document.getElementById(`status_${orderId}`).value;
+      const eta = document.getElementById(`eta_${orderId}`).value.trim();
+
+      await updateDoc(doc(db, "orders", orderId), {
+        status,
+        estimatedTime: eta,
+        updatedAt: serverTimestamp()
+      });
+
+      await logAction("Actualizar estado", `Se actualizó el estado del pedido ${orderId} a ${status}`);
+      alert("Estado actualizado.");
+    }
+
+    async function sendToKitchen(orderId) {
+      const order = ordersData.find(item => item.id === orderId);
       if (!order) return;
 
       const eta = document.getElementById(`eta_${orderId}`).value.trim();
-      if (!eta) {
+      if (!eta && order.momentType !== "Programado") {
         alert("Debes ingresar el tiempo estimado antes de enviar a comandera.");
         return;
       }
 
-      order.estimatedTime = eta;
-      order.status = "En comandera";
-      saveOrders(orders);
+      await updateDoc(doc(db, "orders", orderId), {
+        status: "En comandera",
+        estimatedTime: eta || order.estimatedTime || "",
+        updatedAt: serverTimestamp()
+      });
 
       let message = `Hola, ${order.customerName}. Tu pedido en Zona Container fue confirmado.`;
-
       if (order.momentType === "Programado" && order.scheduledDate && order.scheduledTime) {
         message += ` Está programado para ${order.scheduledDate} a las ${order.scheduledTime}.`;
       } else {
@@ -1437,39 +1060,41 @@
       }
 
       sendWhatsApp(order.phone, message);
-      logAction("Enviar a comandera", `Pedido de ${order.customerName} enviado a comandera con tiempo estimado ${eta}`);
-      renderAll();
+      await logAction("Enviar a comandera", `Pedido de ${order.customerName} enviado a comandera.`);
+      alert("Pedido enviado a comandera y mensaje abierto en WhatsApp.");
     }
 
-    function sendReadyMessage(orderId) {
-      const orders = getOrders();
-      const order = orders.find(item => item.id === orderId);
+    async function sendReadyMessage(orderId) {
+      const order = ordersData.find(item => item.id === orderId);
       if (!order) return;
 
       let message = `Hola, ${order.customerName}. `;
+      let newStatus = "Listo";
 
       if (order.serviceType === "Express") {
-        order.status = "En camino";
+        newStatus = "En camino";
         message += "Tu pedido en Zona Container ya va en camino con el express.";
       } else if (order.serviceType === "Recoger en local") {
-        order.status = "Listo para retiro";
+        newStatus = "Listo para retiro";
         message += "Tu pedido en Zona Container ya está listo para retiro.";
       } else {
-        order.status = "Listo";
+        newStatus = "Listo";
         message += "Tu pedido en Zona Container ya está listo.";
       }
 
-      saveOrders(orders);
+      await updateDoc(doc(db, "orders", orderId), {
+        status: newStatus,
+        updatedAt: serverTimestamp()
+      });
+
       sendWhatsApp(order.phone, message);
-      logAction("Aviso al cliente", `Se envió aviso de pedido listo/en camino a ${order.customerName}`);
-      renderAll();
+      await logAction("Aviso al cliente", `Se notificó al cliente ${order.customerName} que el pedido está ${newStatus}.`);
+      alert("Mensaje abierto en WhatsApp.");
     }
 
-    function closeSale(orderId) {
-      const orders = getOrders();
-      const order = orders.find(item => item.id === orderId);
+    async function closeSale(orderId) {
+      const order = ordersData.find(item => item.id === orderId);
       if (!order) return;
-
       if (order.saleClosed) {
         alert("Esta venta ya fue cerrada.");
         return;
@@ -1483,9 +1108,7 @@
         return;
       }
 
-      const sales = getSales();
-      const sale = {
-        id: uid("sale"),
+      await addDoc(collection(db, "sales"), {
         orderId: order.id,
         customerName: order.customerName,
         serviceType: order.serviceType,
@@ -1494,55 +1117,54 @@
         expressAmount: Number(order.expressAmount || 0),
         discount: Number(order.discount || 0),
         total: finalTotal,
-        closedAt: nowISO(),
-        closedById: currentUser.id,
-        closedByName: currentUser.name
-      };
+        closedAt: serverTimestamp(),
+        closedByEmail: currentUser?.email || "",
+        closedByName: currentDisplayName()
+      });
 
-      sales.unshift(sale);
-      saveSales(sales);
+      await updateDoc(doc(db, "orders", orderId), {
+        paymentMethod,
+        totalClosed: finalTotal,
+        saleClosed: true,
+        status: "Entregado",
+        updatedAt: serverTimestamp()
+      });
 
-      order.paymentMethod = paymentMethod;
-      order.totalClosed = finalTotal;
-      order.saleClosed = true;
-      order.status = "Entregado";
-
-      saveOrders(orders);
-      logAction("Cerrar venta", `Se cerró la venta del pedido de ${order.customerName} por ${formatCurrency(finalTotal)}`);
-      renderAll();
+      await logAction("Cerrar venta", `Se cerró la venta del pedido de ${order.customerName} por ${money(finalTotal)}.`);
       alert("Venta cerrada correctamente.");
     }
 
-    function deleteOrder(orderId) {
-      const orders = getOrders();
-      const order = orders.find(item => item.id === orderId);
+    async function deleteOrder(orderId) {
+      const order = ordersData.find(item => item.id === orderId);
       if (!order) return;
 
       const reason = prompt("Escribe la razón por la que eliminas este pedido:");
       if (!reason || !reason.trim()) {
-        alert("Debes indicar una razón para eliminar el pedido.");
+        alert("Debes indicar una razón.");
         return;
       }
 
-      order.deleted = true;
-      order.deletedAt = nowISO();
-      order.deletedById = currentUser.id;
-      order.deletedByName = currentUser.name;
-      order.deleteReason = reason.trim();
+      await updateDoc(doc(db, "orders", orderId), {
+        deleted: true,
+        deletedAt: serverTimestamp(),
+        deleteReason: reason.trim(),
+        deletedByEmail: currentUser?.email || "",
+        deletedByName: currentDisplayName(),
+        updatedAt: serverTimestamp()
+      });
 
-      saveOrders(orders);
-      logAction("Eliminar pedido", `Se eliminó el pedido de ${order.customerName}`, { reason: reason.trim() });
-      renderAll();
+      await logAction("Eliminar pedido", `Se eliminó el pedido de ${order.customerName}.`, {
+        reason: reason.trim()
+      });
+
       alert("Pedido eliminado y registrado en bitácora.");
     }
 
     function printTicket(orderId) {
-      const order = getOrders().find(item => item.id === orderId);
+      const order = ordersData.find(item => item.id === orderId);
       if (!order) return;
 
-      const total = order.totalClosed != null
-        ? Number(order.totalClosed)
-        : Number(order.subtotal || 0) + Number(order.expressAmount || 0) - Number(order.discount || 0);
+      const total = Number(order.totalClosed ?? (Number(order.subtotal || 0) + Number(order.expressAmount || 0) - Number(order.discount || 0)));
 
       const ticketWindow = window.open("", "_blank", "width=420,height=700");
       if (!ticketWindow) return;
@@ -1562,18 +1184,18 @@
             <h1>Zona Container</h1>
             <h2>Ticket de compra</h2>
             <hr>
-            <p><strong>Cliente:</strong> ${escapeHtml(order.customerName)}</p>
-            <p><strong>Teléfono:</strong> ${escapeHtml(order.phone)}</p>
-            <p><strong>Servicio:</strong> ${escapeHtml(order.serviceType)}</p>
+            <p><strong>Cliente:</strong> ${safe(order.customerName)}</p>
+            <p><strong>Teléfono:</strong> ${safe(order.phone)}</p>
+            <p><strong>Servicio:</strong> ${safe(order.serviceType)}</p>
             <p><strong>Fecha:</strong> ${formatDateTime(order.createdAt)}</p>
-            <p><strong>Pedido:</strong><br>${escapeHtml(order.items).replace(/\n/g, "<br>")}</p>
+            <p><strong>Pedido:</strong><br>${safe(order.items).replace(/\n/g, "<br>")}</p>
             <hr>
-            <p><strong>Subtotal:</strong> ${formatCurrency(order.subtotal)}</p>
-            <p><strong>Express:</strong> ${formatCurrency(order.expressAmount)}</p>
-            <p><strong>Descuento:</strong> ${formatCurrency(order.discount)}</p>
-            <p><strong>Total:</strong> ${formatCurrency(total)}</p>
-            <p><strong>Método de pago:</strong> ${escapeHtml(order.paymentMethod || "Pendiente")}</p>
-            <p><strong>Notas:</strong> ${order.notes ? escapeHtml(order.notes) : "Sin notas"}</p>
+            <p><strong>Subtotal:</strong> ${money(order.subtotal)}</p>
+            <p><strong>Express:</strong> ${money(order.expressAmount)}</p>
+            <p><strong>Descuento:</strong> ${money(order.discount)}</p>
+            <p><strong>Total:</strong> ${money(total)}</p>
+            <p><strong>Método de pago:</strong> ${safe(order.paymentMethod || "Pendiente")}</p>
+            <p><strong>Notas:</strong> ${order.notes ? safe(order.notes) : "Sin notas"}</p>
             <hr>
             <p style="text-align:center;">Gracias por tu compra</p>
           </body>
@@ -1584,156 +1206,21 @@
       ticketWindow.print();
     }
 
-    function editUser(userId) {
-      if (!hasRole("admin")) return;
+    async function saveCashClosing() {
+      const { start, end } = todayBounds();
+      const todaySales = salesData.filter(sale => inRange(sale.closedAt, start, end));
 
-      const users = getUsers();
-      const user = users.find(item => item.id === userId);
-      if (!user) return;
+      const expected = { efectivo: 0, sinpe: 0, tarjeta: 0, otro: 0 };
 
-      const newName = prompt("Nuevo nombre:", user.name);
-      if (!newName) return;
+      todaySales.forEach(sale => {
+        const method = String(sale.paymentMethod || "").toLowerCase();
+        if (method === "efectivo") expected.efectivo += Number(sale.total || 0);
+        else if (method === "sinpe") expected.sinpe += Number(sale.total || 0);
+        else if (method === "tarjeta") expected.tarjeta += Number(sale.total || 0);
+        else expected.otro += Number(sale.total || 0);
+      });
 
-      const newUsername = prompt("Nuevo usuario:", user.username);
-      if (!newUsername) return;
-
-      const newPassword = prompt("Nueva contraseña:", user.password);
-      if (!newPassword) return;
-
-      const newRole = prompt("Nuevo rol (admin / operador / cocina):", user.role);
-      if (!newRole || !["admin", "operador", "cocina"].includes(newRole)) {
-        alert("Rol inválido.");
-        return;
-      }
-
-      user.name = newName.trim();
-      user.username = newUsername.trim();
-      user.password = newPassword.trim();
-      user.role = newRole.trim();
-
-      saveUsers(users);
-      logAction("Editar usuario", `Se editó el usuario ${user.name}`);
-      renderAll();
-    }
-
-    function toggleUserActive(userId) {
-      if (!hasRole("admin")) return;
-
-      const users = getUsers();
-      const user = users.find(item => item.id === userId);
-      if (!user) return;
-
-      user.active = !user.active;
-      saveUsers(users);
-      logAction("Cambiar estado usuario", `${user.name} pasó a estado ${user.active ? "Activo" : "Inactivo"}`);
-      renderAll();
-    }
-
-    loginForm.addEventListener("submit", function (e) {
-      e.preventDefault();
-      login(
-        document.getElementById("loginUsername").value.trim(),
-        document.getElementById("loginPassword").value.trim()
-      );
-    });
-
-    orderMomentType.addEventListener("change", updateProgrammedOrderBlock);
-    [orderSubtotal, orderExpressAmount, orderDiscount].forEach(input => {
-      input.addEventListener("input", calculateManualOrderTotal);
-    });
-
-    manualOrderForm.addEventListener("submit", function (e) {
-      e.preventDefault();
-
-      const total = calculateManualOrderTotal();
-      const serviceType = orderServiceType.value;
-      const momentType = orderMomentType.value;
-      const scheduledDate = document.getElementById("orderScheduledDate").value;
-      const scheduledTime = document.getElementById("orderScheduledTime").value;
-
-      if (momentType === "Programado" && (!scheduledDate || !scheduledTime)) {
-        manualOrderStatus.textContent = "Debes indicar fecha y hora para el pedido programado.";
-        return;
-      }
-
-      const orderData = {
-        id: uid("order"),
-        customerName: document.getElementById("orderCustomerName").value.trim(),
-        phone: document.getElementById("orderPhone").value.trim(),
-        serviceType,
-        momentType,
-        scheduledDate,
-        scheduledTime,
-        items: document.getElementById("orderItems").value.trim(),
-        subtotal: Number(orderSubtotal.value || 0),
-        expressAmount: Number(orderExpressAmount.value || 0),
-        discount: Number(orderDiscount.value || 0),
-        total,
-        notes: document.getElementById("orderNotes").value.trim(),
-        paymentMethod: "",
-        status: "Nuevo",
-        estimatedTime: "",
-        saleClosed: false,
-        deleted: false,
-        createdAt: nowISO(),
-        createdById: currentUser.id,
-        createdByName: currentUser.name
-      };
-
-      createManualOrder(orderData);
-      logAction("Crear pedido manual", `Se creó un pedido manual para ${orderData.customerName}`);
-      manualOrderForm.reset();
-      updateProgrammedOrderBlock();
-      calculateManualOrderTotal();
-      manualOrderStatus.textContent = "Pedido manual guardado correctamente.";
-      renderAll();
-    });
-
-    createUserForm.addEventListener("submit", function (e) {
-      e.preventDefault();
-
-      if (!hasRole("admin")) {
-        createUserStatus.textContent = "No tienes permiso para crear usuarios.";
-        return;
-      }
-
-      const users = getUsers();
-      const username = document.getElementById("newUserUsername").value.trim();
-
-      if (users.some(user => user.username === username)) {
-        createUserStatus.textContent = "Ese usuario ya existe.";
-        return;
-      }
-
-      const newUser = {
-        id: uid("user"),
-        name: document.getElementById("newUserName").value.trim(),
-        username,
-        password: document.getElementById("newUserPassword").value.trim(),
-        role: document.getElementById("newUserRole").value,
-        active: true,
-        createdAt: nowISO()
-      };
-
-      users.unshift(newUser);
-      saveUsers(users);
-      logAction("Crear usuario", `Se creó el usuario ${newUser.name}`);
-      createUserForm.reset();
-      createUserStatus.textContent = "Usuario creado correctamente.";
-      renderAll();
-    });
-
-    cashClosingForm.addEventListener("submit", function (e) {
-      e.preventDefault();
-
-      if (!hasRole("admin", "operador")) {
-        cashStatus.textContent = "No tienes permiso para cerrar caja.";
-        return;
-      }
-
-      const expected = getExpectedByPaymentToday();
-      const closing = {
-        id: uid("closing"),
+      await addDoc(collection(db, "cash_closings"), {
         expected,
         actual: {
           efectivo: Number(document.getElementById("cashActual").value || 0),
@@ -1741,50 +1228,169 @@
           tarjeta: Number(document.getElementById("cardActual").value || 0)
         },
         notes: document.getElementById("cashNotes").value.trim(),
-        createdAt: nowISO(),
-        createdById: currentUser.id,
-        createdByName: currentUser.name
-      };
+        createdAt: serverTimestamp(),
+        createdByEmail: currentUser?.email || "",
+        createdByName: currentDisplayName()
+      });
 
-      const closings = getCashClosings();
-      closings.unshift(closing);
-      saveCashClosings(closings);
-      logAction("Cierre de caja", `${currentUser.name} realizó cierre de caja`);
+      await logAction("Cierre de caja", `${currentDisplayName()} realizó cierre de caja.`);
       cashClosingForm.reset();
       cashStatus.textContent = "Cierre de caja guardado correctamente.";
-      renderAll();
+    }
+
+    function attachLiveListeners() {
+      onSnapshot(query(collection(db, "orders"), orderBy("createdAt", "desc")), (snapshot) => {
+        ordersData = snapshot.docs.map(item => ({ id: item.id, ...item.data() }));
+        renderAll();
+      });
+
+      onSnapshot(query(collection(db, "sales"), orderBy("closedAt", "desc")), (snapshot) => {
+        salesData = snapshot.docs.map(item => ({ id: item.id, ...item.data() }));
+        renderAll();
+      });
+
+      onSnapshot(query(collection(db, "logs"), orderBy("createdAt", "desc")), (snapshot) => {
+        logsData = snapshot.docs.map(item => ({ id: item.id, ...item.data() }));
+        renderAll();
+      });
+
+      onSnapshot(query(collection(db, "cash_closings"), orderBy("createdAt", "desc")), (snapshot) => {
+        cashClosingsData = snapshot.docs.map(item => ({ id: item.id, ...item.data() }));
+        renderAll();
+      });
+    }
+
+    loginForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      loginStatus.textContent = "";
+
+      const email = document.getElementById("loginEmail").value.trim();
+      const password = document.getElementById("loginPassword").value.trim();
+
+      try {
+        await signInWithEmailAndPassword(auth, email, password);
+      } catch (error) {
+        loginStatus.textContent = "No se pudo iniciar sesión. Revisa correo y contraseña.";
+      }
     });
 
-    navTabs.addEventListener("click", function (e) {
-      const btn = e.target.closest("button[data-tab]");
+    tabsNav.addEventListener("click", (e) => {
+      const btn = e.target.closest(".tab-btn");
       if (!btn) return;
-
-      if (btn.classList.contains("hidden")) return;
-
-      const tabId = btn.dataset.tab;
-      setActiveTab(tabId);
+      setActiveTab(btn.dataset.tab);
     });
 
-    clockOutBtn.addEventListener("click", registerClockOut);
-
-    logoutBtn.addEventListener("click", function () {
-      logout();
+    orderMomentType.addEventListener("change", updateProgrammedOrderBlock);
+    [orderSubtotal, orderExpressAmount, orderDiscount].forEach(input => {
+      input.addEventListener("input", calculateManualOrderTotal);
     });
 
-    seedInitialAdmin();
+    manualOrderForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
 
-    const rememberedUser = loadCurrentUser();
-    if (rememberedUser) {
-      currentUser = rememberedUser;
+      const momentType = orderMomentType.value;
+      const scheduledDate = document.getElementById("orderScheduledDate").value;
+      const scheduledTime = document.getElementById("orderScheduledTime").value;
+      const total = calculateManualOrderTotal();
+
+      if (momentType === "Programado" && (!scheduledDate || !scheduledTime)) {
+        manualOrderStatus.textContent = "Debes indicar fecha y hora para el pedido programado.";
+        return;
+      }
+
+      try {
+        await addDoc(collection(db, "orders"), {
+          customerName: document.getElementById("orderCustomerName").value.trim(),
+          phone: document.getElementById("orderPhone").value.trim(),
+          serviceType: document.getElementById("orderServiceType").value,
+          momentType,
+          scheduledDate,
+          scheduledTime,
+          items: document.getElementById("orderItems").value.trim(),
+          subtotal: Number(orderSubtotal.value || 0),
+          expressAmount: Number(orderExpressAmount.value || 0),
+          discount: Number(orderDiscount.value || 0),
+          total,
+          notes: document.getElementById("orderNotes").value.trim(),
+          paymentMethod: "",
+          status: "Nuevo",
+          estimatedTime: "",
+          saleClosed: false,
+          deleted: false,
+          source: "admin",
+          createdAt: serverTimestamp(),
+          updatedAt: serverTimestamp(),
+          createdByEmail: currentUser?.email || "",
+          createdByName: currentDisplayName()
+        });
+
+        await logAction("Crear pedido manual", `Se creó un pedido manual para ${document.getElementById("orderCustomerName").value.trim()}.`);
+        manualOrderForm.reset();
+        updateProgrammedOrderBlock();
+        calculateManualOrderTotal();
+        manualOrderStatus.textContent = "Pedido manual guardado correctamente.";
+      } catch (error) {
+        manualOrderStatus.textContent = "No se pudo guardar el pedido manual.";
+      }
+    });
+
+    cashClosingForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      try {
+        await saveCashClosing();
+      } catch (error) {
+        cashStatus.textContent = "No se pudo guardar el cierre de caja.";
+      }
+    });
+
+    clockOutBtn.addEventListener("click", async () => {
+      try {
+        await logAction("Salida de turno", `${currentDisplayName()} marcó salida.`, {
+          clockInAt: clockInISO || "",
+          clockOutAt: nowLocalISO()
+        });
+        await signOut(auth);
+      } catch (error) {
+        alert("No se pudo marcar la salida.");
+      }
+    });
+
+    logoutBtn.addEventListener("click", async () => {
+      try {
+        await signOut(auth);
+      } catch (error) {
+        alert("No se pudo cerrar sesión.");
+      }
+    });
+
+    onAuthStateChanged(auth, async (user) => {
+      currentUser = user || null;
+
+      if (!user) {
+        showLogin();
+        return;
+      }
+
+      clockInISO = nowLocalISO();
+      sidebarUserEmail.textContent = user.email || "—";
+      sidebarUserName.textContent = currentDisplayName();
+      sidebarClockIn.textContent = formatDateTime(clockInISO);
+
       showApp();
       setActiveTab("dashboardTab");
+
+      try {
+        await logAction("Entrada de turno", `${currentDisplayName()} abrió la app.`, {
+          clockInAt: clockInISO
+        });
+      } catch (_) {}
+
       renderAll();
-    } else {
-      showLogin();
-    }
+    });
 
     updateProgrammedOrderBlock();
     calculateManualOrderTotal();
+    attachLiveListeners();
 
     window.updateOrderStatus = updateOrderStatus;
     window.sendToKitchen = sendToKitchen;
@@ -1792,8 +1398,6 @@
     window.closeSale = closeSale;
     window.printTicket = printTicket;
     window.deleteOrder = deleteOrder;
-    window.editUser = editUser;
-    window.toggleUserActive = toggleUserActive;
   </script>
 </body>
 </html>
