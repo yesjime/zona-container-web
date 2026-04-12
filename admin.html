@@ -100,6 +100,8 @@
       color: #bbb;
       line-height: 1.45;
       font-size: 0.95rem;
+      white-space: pre-wrap;
+      word-break: break-word;
     }
 
     .app-shell {
@@ -1270,7 +1272,8 @@
       try {
         await signInWithEmailAndPassword(auth, email, password);
       } catch (error) {
-        loginStatus.textContent = "No se pudo iniciar sesión. Revisa correo y contraseña.";
+        loginStatus.textContent = `Error: ${error.code} | ${error.message}`;
+        console.error("LOGIN ERROR:", error);
       }
     });
 
@@ -1330,7 +1333,7 @@
         calculateManualOrderTotal();
         manualOrderStatus.textContent = "Pedido manual guardado correctamente.";
       } catch (error) {
-        manualOrderStatus.textContent = "No se pudo guardar el pedido manual.";
+        manualOrderStatus.textContent = `No se pudo guardar el pedido manual: ${error.code || error.message}`;
       }
     });
 
@@ -1339,7 +1342,7 @@
       try {
         await saveCashClosing();
       } catch (error) {
-        cashStatus.textContent = "No se pudo guardar el cierre de caja.";
+        cashStatus.textContent = `No se pudo guardar el cierre de caja: ${error.code || error.message}`;
       }
     });
 
